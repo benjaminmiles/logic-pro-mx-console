@@ -4,13 +4,12 @@ namespace Loupedeck.LogicProPlugin
     using System.Collections.Generic;
     using System.Linq;
 
-    // Keypad buttons sent as Mackie Control messages rather than keystrokes. These reach Logic even
-    // when it is in the background, and never land in another application.
-    public class LogicMidiCommand : PluginDynamicCommand
-    {
-        private record MidiCommand(String Id, String DisplayName, Byte Note);
+    // A Logic command expressed as a Mackie Control button press.
+    public record MidiCommand(String Id, String DisplayName, Byte Note);
 
-        private static readonly IReadOnlyList<MidiCommand> Commands = new List<MidiCommand>
+    public static class LogicMidiCommands
+    {
+        public static readonly IReadOnlyList<MidiCommand> All = new List<MidiCommand>
         {
             new("MidiPlay", "Play", MackieButton.Play),
             new("MidiStop", "Stop", MackieButton.Stop),
@@ -30,20 +29,28 @@ namespace Loupedeck.LogicProPlugin
             new("MidiTrackDown", "Select Next Track", MackieButton.CursorDown),
         };
 
+        public static MidiCommand Find(String id) => All.FirstOrDefault(c => c.Id == id);
+    }
+
+    // Keypad buttons sent as Mackie Control messages rather than keystrokes. These reach Logic even
+    // when it is in the background, and never land in another application.
+    public class LogicMidiCommand : PluginDynamicCommand
+    {
+
         public LogicMidiCommand()
         {
             this.DisplayName = "Logic Pro MIDI Commands";
             this.GroupName = "Not used";
 
-            foreach (var command in Commands)
+            foreach (var command in LogicMidiCommands.All)
             {
-                this.AddParameter(command.Id, command.DisplayName, "MIDI (Mackie Control)");
+                this.AddParameter(command.Id, command.DisplayName, "MIDI");
             }
         }
 
         protected override void RunCommand(String actionParameter)
         {
-            var command = Commands.FirstOrDefault(c => c.Id == actionParameter);
+            var command = LogicMidiCommands.Find(actionParameter);
             if (command == null)
             {
                 PluginLog.Warning($"Unknown Logic Pro MIDI command '{actionParameter}'");

@@ -17,6 +17,9 @@ namespace Loupedeck.LogicProPlugin
         private const String LeftKeyControl = "LeftKey";
         private const String RightKeyControl = "RightKey";
 
+        private const String ModifierModeControl = "ModifierMode";
+        private const String LabelControl = "Label";
+        private const String ModeSame = "Same";
         private const String ModeCustom = "Custom";
         private const String ModeDefault = "ScrubBars";
 
@@ -27,12 +30,14 @@ namespace Loupedeck.LogicProPlugin
             : base(hasReset: false)
         {
             this.Name = "LogicDial";
-            this.DisplayName = "Logic Pro Dial";
-            this.GroupName = "Dial";
+            this.DisplayName = "Modifiable Dial";
+            this.GroupName = "Advanced";
             this.Description = "Scrub, zoom or navigate Logic Pro, with adjustable speed";
 
             this.ActionEditor.AddControlEx(
                 new ActionEditorListbox(ModeControl, "Turning:", "What the dial does when you turn it"));
+            this.ActionEditor.AddControlEx(
+                new ActionEditorListbox(ModifierModeControl, "With modifier held:", "What the dial does while a button assigned to 'Hold as Modifier' is down"));
             this.ActionEditor.AddControlEx(
                 new ActionEditorKeyboardKey(LeftKeyControl, "Turn left sends:", "Used when Turning is set to a custom shortcut")
                     .SetBehavior(ActionEditorKeyboardKeyBehavior.KeyboardKey));
@@ -52,30 +57,51 @@ namespace Loupedeck.LogicProPlugin
                     .SetValues(minimumValue: 0, maximumValue: 200, defaultValue: 0, step: 10)
                     .SetFormatString("{0} ms"));
 
+            this.ActionEditor.AddControlEx(
+                new ActionEditorTextbox(LabelControl, "Dial text:", "Shown next to the dial. Leave empty to use the mode name"));
+
             this.ActionEditor.ListboxItemsRequested += this.OnListboxItemsRequested;
         }
 
         private void OnListboxItemsRequested(Object sender, ActionEditorListboxItemsRequestedEventArgs e)
         {
-            if (e.ControlName.EqualsNoCase(ModeControl))
+            var isModifier = e.ControlName.EqualsNoCase(ModifierModeControl);
+            if (!isModifier && !e.ControlName.EqualsNoCase(ModeControl))
             {
-                foreach (var mode in LogicKeyCommands.DialModes)
-                {
-                    e.AddItem(mode.Id, mode.DisplayName, null);
-                }
-
-                e.AddItem(ModeCustom, "Custom shortcut (set the two keys below)", null);
-
-                if (String.IsNullOrEmpty(e.SelectedItemName))
-                {
-                    e.SetSelectedItemName(ModeDefault);
-                }
+                return;
             }
+
+            if (isModifier)
+            {
+                e.AddItem(ModeSame, "Nothing different", null);
+            }
+
+            foreach (var mode in LogicKeyCommands.DialModes)
+            {
+                e.AddItem(mode.Id, mode.DisplayName,
+                    LogicKeyCommands.SetupHint(mode.Left, mode.Right));
+            }
+
+            if (!isModifier)
+            {
+                e.AddItem(ModeCustom, "Custom shortcut (set the two keys below)", null);
+            }
+
+            e.SelectSavedOrDefault(isModifier ? ModeSame : ModeDefault);
         }
 
         protected override Boolean ApplyAdjustment(ActionEditorActionParameters actionParameters, Int32 diff)
         {
             var modeId = actionParameters.GetString(ModeControl, ModeDefault);
+            if (LogicModifier.IsHeld)
+            {
+                var modifierMode = actionParameters.GetString(ModifierModeControl, ModeSame);
+                if (modifierMode != ModeSame && !String.IsNullOrEmpty(modifierMode))
+                {
+                    modeId = modifierMode;
+                }
+            }
+
             var mode = LogicKeyCommands.DialModes.FirstOrDefault(m => m.Id == modeId);
             if (diff == 0 || (mode == null && modeId != ModeCustom))
             {
@@ -120,6 +146,12 @@ namespace Loupedeck.LogicProPlugin
 
         protected override String GetAdjustmentDisplayName(ActionEditorActionParameters actionParameters)
         {
+            var label = actionParameters.GetString(LabelControl, String.Empty);
+            if (!String.IsNullOrEmpty(label))
+            {
+                return label;
+            }
+
             var mode = LogicKeyCommands.DialModes.FirstOrDefault(
                 m => m.Id == actionParameters.GetString(ModeControl, String.Empty));
             return mode?.DisplayName ?? "Logic Pro Dial";

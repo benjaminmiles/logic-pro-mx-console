@@ -38,6 +38,12 @@ namespace Loupedeck.LogicProPlugin
 
         protected override String GetAdjustmentValue(String actionParameter) => null;
 
+        protected override String GetAdjustmentDisplayName(String actionParameter, PluginImageSize imageSize)
+        {
+            var mode = FindMode(actionParameter);
+            return mode == null ? null : LogicKeyCommands.KeyFaceName(mode.DisplayName);
+        }
+
         private static LogicDialMode FindMode(String id) => LogicKeyCommands.DialModes.FirstOrDefault(m => m.Id == id);
     }
 }

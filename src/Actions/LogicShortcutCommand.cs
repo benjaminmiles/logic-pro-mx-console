@@ -17,6 +17,13 @@ namespace Loupedeck.LogicProPlugin
             }
         }
 
+        // The action list names the function key to assign; the key face shows the name alone.
+        protected override String GetCommandDisplayName(String actionParameter, PluginImageSize imageSize)
+        {
+            var command = LogicKeyCommands.Commands.FirstOrDefault(c => c.Id == actionParameter);
+            return command == null ? null : LogicKeyCommands.KeyFaceName(command.DisplayName);
+        }
+
         protected override void RunCommand(String actionParameter)
         {
             var command = LogicKeyCommands.Commands.FirstOrDefault(c => c.Id == actionParameter);

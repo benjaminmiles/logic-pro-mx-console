@@ -23,12 +23,17 @@ It needs a one-time setup in Logic:
 
 Then drop the jog action on a dial. Its settings:
 
-- **Wheel does** — move the playhead, or zoom the timeline.
-- **Sensitivity** — 1x to 10x.
-- **Speed up when spun fast** — a steady spin accelerates; a single click still moves the smallest amount.
-- **Reverse direction**.
+- **Wheel does** — move the playhead, zoom horizontally, or zoom vertically. The key command dial modes
+  are offered here too, so one wheel can mix MIDI jogging with commands Mackie Control cannot express.
+- **With modifier held** — a second job for the wheel while a button assigned to **Modifier** is down.
+- **Jog resolution** — from 16 clicks per step up to 8 steps per click.
+- **Speed up when spun fast** — off by default; a sustained spin then travels faster, up to 4x.
+- **Reverse direction**, and **Dial text** to relabel the dial.
 
-The **MIDI (Mackie Control)** group of keypad actions works the same way: Play, Stop, Record, Cycle,
+Logic's jog snaps to bars unless **Scrub mode** is on; with it on, the wheel scrubs continuously with
+audio. The Scrub Mode On/Off action is in the MIDI group.
+
+The **MIDI** group of keypad actions works the same way: Play, Stop, Record, Cycle,
 Metronome, Marker, Scrub mode, Undo, Save and track selection.
 
 ## Keystroke actions
@@ -40,27 +45,54 @@ command. These only apply while Logic is frontmost, which the plugin checks befo
 
 | Mode | Turn left / right |
 |---|---|
-| Scrub Timeline (Bars) | Rewind / Forward (`,` / `.`) |
-| Scrub Timeline (Fast) | Fast Rewind / Fast Forward (`⇧,` / `⇧.`) |
+| Scrub by Bar | Rewind / Forward (`,` / `.`) |
+| Scrub Fast | Fast Rewind / Fast Forward (`⇧,` / `⇧.`) |
 | Scrub by Transient | Rewind / Forward by Transient (`⌃,` / `⌃.`) |
-| Scrub by Division Value \* | `F13` / `F14` |
-| Scrub by Nudge Value \* | `F15` / `F16` |
-| Previous / Next Marker | `⌥,` / `⌥.` |
+| Scrub by Division | `F13` / `F14` — needs assigning |
+| Scrub by Nudge Value | `F15` / `F16` — needs assigning |
+| Audible Scrub | `F17` / `F18` — needs assigning |
+| Prev / Next Marker | `⌥,` / `⌥.` |
 | Zoom Horizontal | `⌘←` / `⌘→` |
 | Zoom Vertical | `⌘↑` / `⌘↓` |
-| Select Track Up / Down | `↑` / `↓` |
-| Nudge Region Left / Right | `⌥←` / `⌥→` |
+| Select Track | `↑` / `↓` |
+| Nudge Region | `⌥←` / `⌥→` |
 | Undo / Redo | `⌘Z` / `⇧⌘Z` |
 
-The **Logic Pro Dial** action adds a speed setting (1 step per 1–12 clicks), direction reversal, and a
-custom shortcut mode that sends any two keys you record — useful for customised key command sets.
+## Logic key assignments
 
-\* Logic ships these commands **unassigned**. To use them, open Logic's Key Commands window (`⌥K`), search
-"division", click the **Rewind by Division Value** row, click **Learn by Key Label**, press **F13**, then
-click Learn again to disarm. Repeat for **Forward by Division Value** with **F14**.
+A handful of Logic commands ship with **no key command at all**, so the plugin cannot reach them until
+you assign one. These actions name their key in the action list — "Rewind by Division (F13)" — and show
+the name alone on the key face.
 
-Single function keys are deliberate: Learn captures any key that arrives — including keystrokes sent by the
-console itself — so chords are easy to get wrong, and Logic's defaults leave F13–F19 free.
+| Logic command | Assign | Used by |
+|---|---|---|
+| Rewind by Division Value | `F13` | Scrub by Division, Rewind by Division |
+| Forward by Division Value | `F14` | Scrub by Division, Forward by Division |
+| Rewind by Nudge Value | `F15` | Scrub by Nudge Value |
+| Forward by Nudge Value | `F16` | Scrub by Nudge Value |
+| Scrub Rewind | `F17` | Audible Scrub |
+| Scrub Forward | `F18` | Audible Scrub |
+| Play or Stop and Go to Last Locate Position | `F19` | Play / Stop & Return |
+| Stop or Play from Last Position | `F20` | Stop / Resume |
+
+To assign one:
+
+1. In Logic, press **⌥K** to open Key Commands.
+2. Search for the command and **click its row** — with the mouse, not the arrow keys.
+3. Click **Learn by Key Label**, press the function key, then click **Learn by Key Label** again to disarm.
+
+Two things make this go wrong: Learn captures *any* key that arrives, including keystrokes sent by the
+console itself, so keep your hands off the console while it is armed; and arrow keys used to move through
+the list get captured too, hence clicking rows with the mouse. Single function keys are used because they
+cannot be mistyped as a chord, and Logic's defaults leave F13–F20 free.
+
+Assign only the ones you want — every other action works out of the box, and the MIDI actions need none of
+this. If a key is taken on your system, assign a different one and use the **Custom Shortcut** action, or
+the **Custom shortcut** mode on Modifiable Dial, to point the plugin at your choice.
+
+Logic's Scrub Rewind and Scrub Forward are momentary — they scrub while the key is held — so set the
+Modifiable Dial's **Hold key for** to 50–100 ms when using Audible Scrub, or each click sends a tap too
+brief for Logic to act on.
 
 If Rewind and Forward show no key at all in the Key Commands window, their assignments have been cleared.
 The `⋯` menu's **Initialize all Key Commands** restores them to `,` and `.`; export your key commands first
@@ -103,6 +135,45 @@ logiplugintool verify ./LogicPro_1_0.lplug4
    Privacy & Security → Accessibility). MIDI actions do not.
 2. In Options+, open the Keypad or Dialpad, choose the **Logic Pro** profile, and drag actions from
    **All Actions → Installed Plugins → Logic Pro**.
+
+## FAQ
+
+Draft answers for the marketplace listing.
+
+**Does this plugin require a specific keyboard layout?**
+The key command actions assume the standard QWERTY English (US) layout and Logic's default key command
+set. Other layouts may not trigger every command. The MIDI actions — the jog wheel and the transport
+buttons — are unaffected, because they do not use the keyboard at all.
+
+**I've installed the plugin, but some actions don't work.**
+Most often the key command behind the action has been changed or cleared in Logic. Open Logic's Key
+Commands window (`⌥K`), search for the command, and check the Key column. The `⋯` menu's **Initialize all
+Key Commands** restores Logic's defaults — export your own set first if you have customisations worth
+keeping. A few actions (Scrub by Division Value, by Nudge Value, Audible Scrub) ship unassigned in Logic
+by design and need a one-time assignment, described above. Any action can also be pointed at a different
+key with the **Custom Shortcut** action.
+
+**The jog wheel does nothing.**
+The jog wheel needs the one-time Mackie Control setup in Logic (see above) and only works while Logic is
+running. Check that Logic Pro → Settings → Control Surfaces → Setup shows a Mackie Control whose input and
+output ports are both **Logic Pro Console**.
+
+**Why does the jog move a whole bar at a time?**
+Logic's jog snaps to bars unless Scrub mode is on. Turn on **Scrub Mode On/Off** from the MIDI group for
+continuous, audible scrubbing. The **Jog resolution** setting controls how often a step is sent, not how
+far Logic moves for each one.
+
+**Do the keyboard actions type into other applications?**
+No. Every key command checks that Logic Pro is frontmost before sending, and is dropped otherwise.
+
+**Why does the plugin install a MIDI device?**
+That virtual device is how the jog wheel talks to Logic, using Logic's built-in Mackie Control support. It
+exists only while the plugin is loaded. It is created by a small helper program included in the plugin,
+because the Logi Plugin Service process itself cannot reach macOS's MIDI system.
+
+**Does this plugin collect personal data?**
+No. It sends key commands and MIDI messages to Logic Pro on your own machine, and communicates with
+nothing else.
 
 ## License
 

@@ -2,6 +2,7 @@ namespace Loupedeck.LogicProPlugin
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     // A single Logic Pro key command, expressed as a key plus modifiers.
     // Character is the key's printed character, used by the dial's compatibility key mode,
@@ -34,14 +35,17 @@ namespace Loupedeck.LogicProPlugin
             new("Forward", "Forward One Bar", "Transport", new(VirtualKeyCode.Period, ModifierKey.None, '.')),
             new("FastRewind", "Fast Rewind", "Transport", new(VirtualKeyCode.Comma, Shift, ',')),
             new("FastForward", "Fast Forward", "Transport", new(VirtualKeyCode.Period, Shift, '.')),
-            new("RewindTransient", "Rewind by Transient", "Transport", new(VirtualKeyCode.Comma, Ctrl, ',')),
-            new("ForwardTransient", "Forward by Transient", "Transport", new(VirtualKeyCode.Period, Ctrl, '.')),
+            new("RewindTransient", "Rewind Transient", "Transport", new(VirtualKeyCode.Comma, Ctrl, ',')),
+            new("ForwardTransient", "Forward Transient", "Transport", new(VirtualKeyCode.Period, Ctrl, '.')),
             // These two need the matching one-off assignment in Logic (see README).
-            new("RewindDivision", "Rewind by Division Value (assign F13)", "Transport", new(VirtualKeyCode.F13)),
-            new("ForwardDivision", "Forward by Division Value (assign F14)", "Transport", new(VirtualKeyCode.F14)),
+            new("RewindDivision", "Rewind by Division (F13)", "Transport", new(VirtualKeyCode.F13)),
+            new("ForwardDivision", "Forward by Division (F14)", "Transport", new(VirtualKeyCode.F14)),
+            // Logic's own combined transport commands, both shipped unassigned (see README).
+            new("PlayStopReturn", "Play / Stop & Return (F19)", "Transport", new(VirtualKeyCode.F19)),
+            new("StopPlayLast", "Stop / Resume (F20)", "Transport", new(VirtualKeyCode.F20)),
             new("CycleToggle", "Cycle On/Off", "Transport", new(VirtualKeyCode.KeyC)),
             new("Metronome", "Metronome On/Off", "Transport", new(VirtualKeyCode.KeyK)),
-            new("CaptureRecording", "Capture as Recording", "Transport", new(VirtualKeyCode.KeyR, Shift)),
+            new("CaptureRecording", "Capture Recording", "Transport", new(VirtualKeyCode.KeyR, Shift)),
 
             // Editing
             new("Undo", "Undo", "Edit", new(VirtualKeyCode.KeyZ, Cmd)),
@@ -59,7 +63,7 @@ namespace Loupedeck.LogicProPlugin
             new("DuplicateTrack", "Duplicate Track", "Track", new(VirtualKeyCode.KeyD, Cmd)),
             new("MuteTrack", "Mute Track", "Track", new(VirtualKeyCode.KeyM, Ctrl)),
             new("SoloTrack", "Solo Track", "Track", new(VirtualKeyCode.KeyS, Ctrl)),
-            new("RecordEnableTrack", "Record Enable Track", "Track", new(VirtualKeyCode.KeyR, Ctrl)),
+            new("RecordEnableTrack", "Record Enable", "Track", new(VirtualKeyCode.KeyR, Ctrl)),
 
             // Windows and views
             new("Mixer", "Show Mixer", "View", new(VirtualKeyCode.KeyX)),
@@ -78,12 +82,34 @@ namespace Loupedeck.LogicProPlugin
             new("BounceProject", "Bounce Project", "Project", new(VirtualKeyCode.KeyB, Cmd)),
         };
 
+        // Actions marked with * in their name are Logic commands that ship unassigned, so they do
+        // nothing until the user assigns the key once. The dropdowns show this hint as a subtitle.
+        public static String SetupHint(params LogicKey[] keys)
+        {
+            var functionKeys = keys
+                .Where(key => key != null && key.Key >= VirtualKeyCode.F13 && key.Key <= VirtualKeyCode.F20)
+                .Select(key => key.Key.ToString())
+                .ToArray();
+
+            return functionKeys.Length == 0
+                ? null
+                : $"Assign {String.Join(" / ", functionKeys)} in Logic first — see the plugin page";
+        }
+
+        // Lists and menus name the key to assign — "Rewind by Division (F13)" — but a key face has no
+        // room for it, so the device shows the name alone.
+        public static String KeyFaceName(String displayName)
+        {
+            var bracket = displayName.IndexOf(" (F", StringComparison.Ordinal);
+            return bracket < 0 ? displayName : displayName.Substring(0, bracket);
+        }
+
         public static readonly IReadOnlyList<LogicDialMode> DialModes = new List<LogicDialMode>
         {
-            new("ScrubBars", "Scrub Timeline (Bars)",
+            new("ScrubBars", "Scrub by Bar",
                 Left: new(VirtualKeyCode.Comma, ModifierKey.None, ','), Right: new(VirtualKeyCode.Period, ModifierKey.None, '.'),
                 Press: new(VirtualKeyCode.Space)),
-            new("ScrubFast", "Scrub Timeline (Fast)",
+            new("ScrubFast", "Scrub Fast",
                 Left: new(VirtualKeyCode.Comma, Shift, ','), Right: new(VirtualKeyCode.Period, Shift, '.'),
                 Press: new(VirtualKeyCode.Space)),
             new("ScrubTransient", "Scrub by Transient",
@@ -94,11 +120,16 @@ namespace Loupedeck.LogicProPlugin
             // Logic ships them unassigned. Plain function keys are used rather than chords: Logic's
             // "Learn by Key Label" captures whatever key arrives, so a single key is far easier to
             // assign than a three-key combination, and F13-F19 are untouched by Logic's defaults.
-            new("ScrubDivision", "Scrub by Division Value (assign F13 / F14 in Logic)",
+            new("ScrubDivision", "Scrub by Division (F13/F14)",
                 Left: new(VirtualKeyCode.F13), Right: new(VirtualKeyCode.F14)),
-            new("ScrubNudge", "Scrub by Nudge Value (assign F15 / F16 in Logic)",
+            new("ScrubNudge", "Scrub by Nudge Value (F15/F16)",
                 Left: new(VirtualKeyCode.F15), Right: new(VirtualKeyCode.F16)),
-            new("Markers", "Previous / Next Marker",
+
+            // Scrub Rewind / Forward are momentary in Logic — they scrub while the key is down — so
+            // pair this mode with a key hold time on the Modifiable Dial.
+            new("ScrubAudio", "Audible Scrub (F17/F18)",
+                Left: new(VirtualKeyCode.F17), Right: new(VirtualKeyCode.F18)),
+            new("Markers", "Prev / Next Marker",
                 Left: new(VirtualKeyCode.Comma, Opt, ','), Right: new(VirtualKeyCode.Period, Opt, '.'),
                 Press: new(VirtualKeyCode.Oem7, Opt, '\'')),
             new("ZoomHorizontal", "Zoom Horizontal",
@@ -107,9 +138,9 @@ namespace Loupedeck.LogicProPlugin
             new("ZoomVertical", "Zoom Vertical",
                 Left: new(VirtualKeyCode.ArrowUp, Cmd), Right: new(VirtualKeyCode.ArrowDown, Cmd),
                 Press: new(VirtualKeyCode.KeyZ)),
-            new("SelectTrack", "Select Track Up / Down",
+            new("SelectTrack", "Select Track",
                 Left: new(VirtualKeyCode.ArrowUp), Right: new(VirtualKeyCode.ArrowDown)),
-            new("NudgeRegion", "Nudge Region Left / Right",
+            new("NudgeRegion", "Nudge Region",
                 Left: new(VirtualKeyCode.ArrowLeft, Opt), Right: new(VirtualKeyCode.ArrowRight, Opt)),
             new("UndoRedo", "Undo / Redo",
                 Left: new(VirtualKeyCode.KeyZ, Cmd), Right: new(VirtualKeyCode.KeyZ, Cmd | Shift)),

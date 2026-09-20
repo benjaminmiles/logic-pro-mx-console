@@ -12,8 +12,8 @@ namespace Loupedeck.LogicProPlugin
         public LogicCustomShortcutCommand()
         {
             this.Name = "LogicCustomShortcut";
-            this.DisplayName = "Custom Logic Pro Shortcut";
-            this.GroupName = "Custom";
+            this.DisplayName = "Custom Shortcut";
+            this.GroupName = "Advanced";
             this.Description = "Send any key command to Logic Pro";
 
             this.ActionEditor.AddControlEx(

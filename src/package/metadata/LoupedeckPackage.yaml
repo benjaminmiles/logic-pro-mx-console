@@ -12,7 +12,7 @@ name: LogicPro
 displayName: Logic Pro
 
 # Short description of the plugin.
-description: Scrub the Logic Pro timeline with the dial and trigger Logic Pro key commands from the keypad.
+description: Jog wheel scrubbing and transport, editing and view commands for Logic Pro.
 
 # Name of the plugin library file.
 pluginFileName: LogicProPlugin.dll
@@ -21,10 +21,19 @@ pluginFileName: LogicProPlugin.dll
 version: 1.0
 
 # Author of the plugin. The author can be a company or an individual developer.
-author: miles
+author: Benjamin Miles
 
 # Copyright information.
-copyright: Copyright © 2026 miles. All rights reserved.
+copyright: Copyright © 2026 Benjamin Miles
+
+
+# Plugin icon, shown in Options+ and on the Marketplace listing.
+icon256x256: Icon256x256.png
+
+# Icon colours, ARGB.
+backgroundColor: 4278913806
+foregroundColor: 4281193663
+textColor: 4294967295
 
 
 # ==================================================================================================
