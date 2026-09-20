@@ -51,6 +51,23 @@ G = {
                 '<path d="M28 64 H100"/>',
     "cycle": '<path d="M34 50 H84 a12 12 0 0 1 0 24 H44"/><path d="M52 36 L34 50 L52 64"/>'
              '<path d="M40 88 L58 74"/>',
+    "autopunch": '<path d="M20 78 H108"/><path d="M40 78 V42 H88 V78"/><circle cx="64" cy="30" r="9" fill="{c}" stroke="none"/>',
+    "punchin": '<path d="M28 96 H100"/><path d="M44 30 V74"/><path d="M28 58 L44 74 L60 58"/><path d="M84 30 V74"/>',
+    "punchout": '<path d="M28 96 H100"/><path d="M84 74 V30"/><path d="M68 46 L84 30 L100 46"/><path d="M44 74 V30"/>',
+    "punchsel": '<rect x="26" y="40" width="76" height="34" rx="6" stroke-dasharray="9 7"/>'
+                '<path d="M26 92 H102"/><path d="M26 84 V100"/><path d="M102 84 V100"/>',
+    "tuner": '<path d="M30 100 a40 40 0 0 1 68 0" />'
+             '<path d="M64 96 L80 52"/><circle cx="64" cy="98" r="7" fill="{c}" stroke="none"/>',
+    "muteregion": '<rect x="24" y="46" width="52" height="36" rx="6"/><path d="M88 50 L112 78"/><path d="M112 50 L88 78"/>',
+    "lowlatency": '<path d="M70 20 L34 72 H62 L58 108 L94 56 H66 Z" fill="{c}" stroke="none"/>',
+    "gain": '<path d="M26 92 V66"/><path d="M50 92 V50"/><path d="M74 92 V34"/><path d="M98 92 V58"/>'
+            '<path d="M18 104 H110"/>',
+    "removefade": '<path d="M24 92 L104 44"/><path d="M24 92 H104"/><path d="M104 44 V92"/>'
+                  '<path d="M40 30 L64 54"/><path d="M64 30 L40 54"/>',
+    "countin": '<circle cx="26" cy="64" r="8" fill="{c}" stroke="none"/>'
+                '<circle cx="52" cy="64" r="8" fill="{c}" stroke="none"/>'
+                '<circle cx="78" cy="64" r="8" fill="{c}" stroke="none"/>'
+                '<path d="M96 44 L122 64 L96 84 Z" fill="{c}" stroke="none"/>',
     "metronome": '<path d="M52 32 H76 L90 96 H38 Z"/><path d="M64 90 L80 46"/>',
     "undo": '<path d="M40 60 H80 a16 16 0 0 1 0 32 H58"/><path d="M54 46 L38 60 L54 74"/>',
     "redo": '<path d="M88 60 H48 a16 16 0 0 0 0 32 H70"/><path d="M74 46 L90 60 L74 74"/>',
@@ -136,16 +153,19 @@ KEY_COMMANDS = {
     "ForwardDivision": ("transport", "division"),
     "PlayStopReturn": ("transport", "play_return"), "StopPlayLast": ("transport", "stop_last"),
     "CycleToggle": ("transport", "cycle"),
-    "Metronome": ("transport", "metronome"), "CaptureRecording": ("record", "record_capture"),
+    "Metronome": ("transport", "metronome"), "CountIn": ("transport", "countin"),
+    "Autopunch": ("transport", "autopunch"), "PunchIn": ("transport", "punchin"),
+    "PunchOut": ("transport", "punchout"), "PunchFromSelection": ("transport", "punchsel"), "CaptureRecording": ("record", "record_capture"),
     "Undo": ("edit", "undo"), "Redo": ("edit", "redo"), "SplitAtPlayhead": ("edit", "split"),
     "JoinRegions": ("edit", "join"), "RepeatRegions": ("edit", "repeat"), "LoopRegion": ("edit", "loop"),
-    "Quantize": ("edit", "quantize"), "BounceInPlace": ("edit", "bounce"), "CreateMarker": ("edit", "marker"),
+    "Quantize": ("edit", "quantize"), "BounceInPlace": ("edit", "bounce"), "CreateMarker": ("edit", "marker"), "MuteRegion": ("edit", "muteregion"),
+    "RemoveFadeIn": ("edit", "removefade"), "LowLatency": ("project", "lowlatency"),
     "NewTrack": ("track", "newtrack"), "DuplicateTrack": ("track", "duplicate"),
-    "MuteTrack": ("track", "mute"), "SoloTrack": ("track", "solo"), "RecordEnableTrack": ("record", "recarm"),
+    "SoloTrack": ("track", "solo"), "RecordEnableTrack": ("record", "recarm"),
     "Mixer": ("view", "mixer"), "Editors": ("view", "editors"), "PianoRoll": ("view", "pianoroll"),
     "Library": ("view", "library"), "Inspector": ("view", "inspector"), "SmartControls": ("view", "smart"),
     "Browsers": ("view", "browser"), "LoopBrowser": ("view", "loopbrowser"),
-    "Automation": ("view", "automation"), "ZoomToFit": ("view", "zoomfit"),
+    "Automation": ("view", "automation"), "ZoomToFit": ("view", "zoomfit"), "Tuner": ("view", "tuner"),
     "Save": ("project", "save"), "BounceProject": ("project", "bounce"),
 }
 
@@ -162,10 +182,11 @@ DIAL_MODES = {
     "ScrubNudge": ("transport", "nudge"), "ScrubAudio": ("transport", "scrub"),
     "Markers": ("edit", "marker"), "ZoomHorizontal": ("view", "zoomh"), "ZoomVertical": ("view", "zoomv"),
     "SelectTrack": ("track", "selecttrack"), "NudgeRegion": ("edit", "nudge"), "UndoRedo": ("edit", "undoredo"),
+    "RegionGain": ("edit", "gain"), "RegionGainFine": ("edit", "gain"),
 }
 
 ADVANCED = {
-    "LogicJogAdjustment": "jog", "LogicDialConfigurable": "dial", "LogicButtonConfigurable": "button",
+    "LogicDialConfigurable": "jog", "LogicButtonConfigurable": "button",
     "LogicCustomShortcutCommand": "shortcut", "LogicModifierCommand": "modifier",
 }
 

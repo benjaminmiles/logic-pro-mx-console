@@ -38,13 +38,18 @@ namespace Loupedeck.LogicProPlugin
             new("RewindTransient", "Rewind Transient", "Transport", new(VirtualKeyCode.Comma, Ctrl, ',')),
             new("ForwardTransient", "Forward Transient", "Transport", new(VirtualKeyCode.Period, Ctrl, '.')),
             // These two need the matching one-off assignment in Logic (see README).
-            new("RewindDivision", "Rewind by Division (F13)", "Transport", new(VirtualKeyCode.F13)),
-            new("ForwardDivision", "Forward by Division (F14)", "Transport", new(VirtualKeyCode.F14)),
+            new("RewindDivision", "Rewind by Division (Option+1)", "Transport", new(VirtualKeyCode.Key1, Opt)),
+            new("ForwardDivision", "Forward by Division (Option+2)", "Transport", new(VirtualKeyCode.Key2, Opt)),
             // Logic's own combined transport commands, both shipped unassigned (see README).
-            new("PlayStopReturn", "Play / Stop & Return (F19)", "Transport", new(VirtualKeyCode.F19)),
-            new("StopPlayLast", "Stop / Resume (F20)", "Transport", new(VirtualKeyCode.F20)),
+            new("PlayStopReturn", "Play / Stop & Return (Option+J)", "Transport", new(VirtualKeyCode.KeyJ, Opt)),
+            new("StopPlayLast", "Stop / Resume (Option+=)", "Transport", new(VirtualKeyCode.Equals, Opt)),
             new("CycleToggle", "Cycle On/Off", "Transport", new(VirtualKeyCode.KeyC)),
             new("Metronome", "Metronome On/Off", "Transport", new(VirtualKeyCode.KeyK)),
+            new("Autopunch", "Autopunch On/Off", "Transport", new(VirtualKeyCode.KeyP, Ctrl | Opt | Cmd)),
+            new("PunchIn", "Set Punch In", "Transport", new(VirtualKeyCode.KeyI, Ctrl | Opt | Cmd)),
+            new("PunchOut", "Set Punch Out", "Transport", new(VirtualKeyCode.KeyO, Ctrl | Opt | Cmd)),
+            new("PunchFromSelection", "Punch from Selection (Option+3)", "Transport", new(VirtualKeyCode.Key3, Opt)),
+            new("CountIn", "Count In On/Off", "Transport", new(VirtualKeyCode.KeyK, Shift)),
             new("CaptureRecording", "Capture Recording", "Transport", new(VirtualKeyCode.KeyR, Shift)),
 
             // Editing
@@ -56,13 +61,15 @@ namespace Loupedeck.LogicProPlugin
             new("LoopRegion", "Loop Region On/Off", "Edit", new(VirtualKeyCode.KeyL)),
             new("Quantize", "Quantize", "Edit", new(VirtualKeyCode.KeyQ)),
             new("BounceInPlace", "Bounce in Place", "Edit", new(VirtualKeyCode.KeyB, Ctrl)),
+            new("MuteRegion", "Mute Region", "Edit", new(VirtualKeyCode.KeyM, Ctrl)),
+            new("RemoveFadeIn", "Remove Fades (Option+5)", "Edit", new(VirtualKeyCode.Key5, Opt)),
             new("CreateMarker", "Create Marker", "Edit", new(VirtualKeyCode.Oem7, Opt, '\'')),
 
             // Tracks
             new("NewTrack", "New Track", "Track", new(VirtualKeyCode.KeyN, Cmd | Opt)),
             new("DuplicateTrack", "Duplicate Track", "Track", new(VirtualKeyCode.KeyD, Cmd)),
-            new("MuteTrack", "Mute Track", "Track", new(VirtualKeyCode.KeyM, Ctrl)),
-            new("SoloTrack", "Solo Track", "Track", new(VirtualKeyCode.KeyS, Ctrl)),
+            
+            new("SoloTrack", "Solo Selected Track", "Track", new(VirtualKeyCode.KeyS, Ctrl)),
             new("RecordEnableTrack", "Record Enable", "Track", new(VirtualKeyCode.KeyR, Ctrl)),
 
             // Windows and views
@@ -75,7 +82,10 @@ namespace Loupedeck.LogicProPlugin
             new("Browsers", "Show Browsers", "View", new(VirtualKeyCode.KeyF)),
             new("LoopBrowser", "Show Loop Browser", "View", new(VirtualKeyCode.KeyO)),
             new("Automation", "Show Automation", "View", new(VirtualKeyCode.KeyA)),
+            new("Tuner", "Show/Hide Tuner (Option+4)", "View", new(VirtualKeyCode.Key4, Opt)),
             new("ZoomToFit", "Zoom to Fit", "View", new(VirtualKeyCode.KeyZ)),
+
+            new("LowLatency", "Low Latency Mode (Option+H)", "Project", new(VirtualKeyCode.KeyH, Opt)),
 
             // Project
             new("Save", "Save", "Project", new(VirtualKeyCode.KeyS, Cmd)),
@@ -86,21 +96,26 @@ namespace Loupedeck.LogicProPlugin
         // nothing until the user assigns the key once. The dropdowns show this hint as a subtitle.
         public static String SetupHint(params LogicKey[] keys)
         {
-            var functionKeys = keys
-                .Where(key => key != null && key.Key >= VirtualKeyCode.F13 && key.Key <= VirtualKeyCode.F20)
-                .Select(key => key.Key.ToString())
-                .ToArray();
-
-            return functionKeys.Length == 0
-                ? null
-                : $"Assign {String.Join(" / ", functionKeys)} in Logic first — see the plugin page";
+            return keys.Any(key => key != null && key.Modifiers != ModifierKey.None && NeedsSetup(key))
+                ? "Needs the key command file imported into Logic — see the plugin page"
+                : null;
         }
 
         // Lists and menus name the key to assign — "Rewind by Division (F13)" — but a key face has no
         // room for it, so the device shows the name alone.
+        // Commands Logic ships unassigned, which the bundled key command file sets up.
+        private static Boolean NeedsSetup(LogicKey key) =>
+            (key.Modifiers == ModifierKey.Option &&
+                (key.Key >= VirtualKeyCode.Key0 && key.Key <= VirtualKeyCode.Key9
+                 || key.Key is VirtualKeyCode.KeyH or VirtualKeyCode.KeyJ
+                 or VirtualKeyCode.Minus or VirtualKeyCode.Equals))
+            || (key.Modifiers == ModifierKey.Shift && key.Key is VirtualKeyCode.KeyY or VirtualKeyCode.KeyJ);
+
         public static String KeyFaceName(String displayName)
         {
-            var bracket = displayName.IndexOf(" (F", StringComparison.Ordinal);
+            // Lists name the key to assign — "Show/Hide Tuner (Option+4)" — but a key face has no
+            // room for it, so anything in brackets is dropped.
+            var bracket = displayName.IndexOf(" (", StringComparison.Ordinal);
             return bracket < 0 ? displayName : displayName.Substring(0, bracket);
         }
 
@@ -120,16 +135,16 @@ namespace Loupedeck.LogicProPlugin
             // Logic ships them unassigned. Plain function keys are used rather than chords: Logic's
             // "Learn by Key Label" captures whatever key arrives, so a single key is far easier to
             // assign than a three-key combination, and F13-F19 are untouched by Logic's defaults.
-            new("ScrubDivision", "Scrub by Division (F13/F14)",
-                Left: new(VirtualKeyCode.F13), Right: new(VirtualKeyCode.F14)),
-            new("ScrubNudge", "Scrub by Nudge Value (F15/F16)",
-                Left: new(VirtualKeyCode.F15), Right: new(VirtualKeyCode.F16)),
+            new("ScrubDivision", "Scrub by Division (Option+1/2)",
+                Left: new(VirtualKeyCode.Key1, Opt), Right: new(VirtualKeyCode.Key2, Opt)),
+            new("ScrubNudge", "Scrub by Nudge Value (Option+6/7)",
+                Left: new(VirtualKeyCode.Key6, Opt), Right: new(VirtualKeyCode.Key7, Opt)),
 
             // Scrub Rewind / Forward are momentary in Logic — they scrub while the key is down — so
             // pair this mode with a key hold time on the Modifiable Dial.
-            new("ScrubAudio", "Audible Scrub (F17/F18)",
-                Left: new(VirtualKeyCode.F17), Right: new(VirtualKeyCode.F18)),
-            new("Markers", "Prev / Next Marker",
+            new("ScrubAudio", "Audible Scrub (Option+8/9)",
+                Left: new(VirtualKeyCode.Key8, Opt), Right: new(VirtualKeyCode.Key9, Opt)),
+            new("Markers", "Prev / Next Marker (sets locators)",
                 Left: new(VirtualKeyCode.Comma, Opt, ','), Right: new(VirtualKeyCode.Period, Opt, '.'),
                 Press: new(VirtualKeyCode.Oem7, Opt, '\'')),
             new("ZoomHorizontal", "Zoom Horizontal",
@@ -142,6 +157,10 @@ namespace Loupedeck.LogicProPlugin
                 Left: new(VirtualKeyCode.ArrowUp), Right: new(VirtualKeyCode.ArrowDown)),
             new("NudgeRegion", "Nudge Region",
                 Left: new(VirtualKeyCode.ArrowLeft, Opt), Right: new(VirtualKeyCode.ArrowRight, Opt)),
+            new("RegionGain", "Region Gain +/- 1 dB (Option+0/-)",
+                Left: new(VirtualKeyCode.Minus, Opt), Right: new(VirtualKeyCode.Key0, Opt)),
+            new("RegionGainFine", "Region Gain +/- 0.1 dB (Shift+Y/J)",
+                Left: new(VirtualKeyCode.KeyY, Shift), Right: new(VirtualKeyCode.KeyJ, Shift)),
             new("UndoRedo", "Undo / Redo",
                 Left: new(VirtualKeyCode.KeyZ, Cmd), Right: new(VirtualKeyCode.KeyZ, Cmd | Shift)),
         };
