@@ -150,6 +150,12 @@ keeping. A few actions (Scrub by Division Value, by Nudge Value, Audible Scrub) 
 by design and need a one-time assignment, described above. Any action can also be pointed at a different
 key with the **Custom Shortcut** action.
 
+**I changed a Modifiable Button or Dial's settings and it still does the old thing.**
+Remove the action from the key or dial and drag it on again. In Options+ a configurable action's settings
+are part of its identity, so editing them can leave the control bound to the values it had when you first
+dropped it there. Plain actions - anything from the Transport, Edit, Track, View or Project groups - have
+no settings and never do this.
+
 **Does the plugin type into other applications?**
 No. Every key command checks that Logic Pro is frontmost before sending, and is dropped otherwise.
 
