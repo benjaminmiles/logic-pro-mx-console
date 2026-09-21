@@ -36,7 +36,6 @@
       <PackageFiles Include="package\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(OutputPath)..\%(RecursiveDir)" />
-    <Exec Condition="$(OS) != 'Windows_NT'" Command="chmod +x &quot;$(OutputPath)logicmidihost&quot;" ContinueOnError="true" />
     <Message Text="✅ Package files copied to $(OutputPath)..\" Importance="High" />
   </Target>
 

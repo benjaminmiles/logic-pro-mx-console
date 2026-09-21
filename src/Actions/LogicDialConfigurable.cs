@@ -4,19 +4,17 @@ namespace Loupedeck.LogicProPlugin
     using System.Collections.Concurrent;
     using System.Linq;
 
-    // The dial action: one control for both ways of driving Logic.
+    // The dial action: turning sends Logic key commands, one per click.
     //
-    // Turning can send Mackie Control messages over MIDI — continuous, smooth, unaffected by key
-    // command customisation, but needing the one-time Mackie Control setup in Logic — or Logic key
-    // commands, which need no setup but move in steps and only while Logic is frontmost. Both
-    // families share one speed control, one modifier action and one label, so choosing between them
-    // is a single dropdown rather than a choice between two actions.
+    // Keystrokes are paced rather than queued. Logic takes real time to act on each one, so sending
+    // them in bursts builds a backlog inside Logic and the playhead carries on moving after the dial
+    // stops. One keystroke per event, spaced, keeps the dial and the playhead in step — at the cost
+    // of a hard spin travelling no further than a slow one.
     public class LogicDialConfigurable : ActionEditorAdjustment
     {
         private const String ModeControl = "Mode";
         private const String ModifierModeControl = "ModifierMode";
         private const String ResolutionControl = "Resolution";
-        private const String AccelerationControl = "Acceleration";
         private const String InvertControl = "Invert";
         private const String LeftKeyControl = "LeftKey";
         private const String RightKeyControl = "RightKey";
@@ -24,14 +22,9 @@ namespace Loupedeck.LogicProPlugin
         private const String HoldControl = "KeyHold";
         private const String LabelControl = "Label";
 
-        // MIDI modes, which need the Mackie Control setup in Logic.
-        private const String ModeMidiJog = "MidiJog";
-        private const String ModeMidiZoom = "MidiZoom";
-        private const String ModeMidiZoomVertical = "MidiZoomVertical";
-
         private const String ModeCustom = "Custom";
         private const String ModeSame = "Same";
-        private const String ModeDefault = ModeMidiJog;
+        private const String ModeDefault = "ScrubBars";
 
         // Dial speeds, coarse to fine. Below 1:1 several clicks make one step, which is the only way
         // to move more slowly than Logic's own smallest step.
@@ -42,21 +35,23 @@ namespace Loupedeck.LogicProPlugin
             ("div4", "Fine - 4 clicks per step", 1, 4),
             ("div2", "Slow - 2 clicks per step", 1, 2),
             ("x1", "Normal - 1 step per click", 1, 1),
-            ("x2", "Fast - 2 steps per click", 2, 1),
-            ("x4", "Faster - 4 steps per click", 4, 1),
-            ("x8", "Fastest - 8 steps per click", 8, 1),
         };
 
         private const String DefaultSpeed = "x1";
 
-        // How close together turns must arrive to count as one continuous spin.
-        private static readonly TimeSpan AccelerationWindow = TimeSpan.FromMilliseconds(80);
-
         // Leftover clicks per configured dial, so a slow turn still adds up to a step.
         private readonly ConcurrentDictionary<UInt64, Int32> _pending = new();
 
-        private DateTime _lastTurn = DateTime.MinValue;
-        private Int32 _streak;
+        // When the keyboard is expected to be free again. Sending a keystroke is not instant, so a
+        // fast spin can deliver events faster than they can be sent; queueing them makes the dial
+        // carry on moving after it stops. Events arriving before this moment are dropped instead,
+        // which keeps a spin at a steady rate and stops it dead with the dial.
+        private DateTime _busyUntil = DateTime.MinValue;
+
+        // Minimum spacing between keystrokes. Logic takes time to act on each one, so sending them
+        // in bursts builds a backlog inside Logic itself, which no amount of throttling here can
+        // undo. One keystroke per event, paced, keeps the dial and the playhead in step.
+        private const Int32 KeystrokeSpacingMs = 25;
 
         public LogicDialConfigurable()
             : base(hasReset: false)
@@ -72,8 +67,6 @@ namespace Loupedeck.LogicProPlugin
                 new ActionEditorListbox(ModifierModeControl, "With modifier held:", "What it does while a button assigned to 'Modifier' is down"));
             this.ActionEditor.AddControlEx(
                 new ActionEditorListbox(ResolutionControl, "Dial speed:", "How far one click of the dial moves"));
-            this.ActionEditor.AddControlEx(
-                new ActionEditorCheckbox(AccelerationControl, "Speed up when spun fast:").SetDefaultValue(false));
             this.ActionEditor.AddControlEx(
                 new ActionEditorCheckbox(InvertControl, "Reverse direction:").SetDefaultValue(false));
             this.ActionEditor.AddControlEx(
@@ -118,18 +111,14 @@ namespace Loupedeck.LogicProPlugin
                 e.AddItem(ModeSame, "Nothing different", null);
             }
 
-            e.AddItem(ModeMidiJog, "MIDI: Move the playhead", "Needs the Mackie Control setup in Logic");
-            e.AddItem(ModeMidiZoom, "MIDI: Zoom horizontally", "Needs the Mackie Control setup in Logic");
-            e.AddItem(ModeMidiZoomVertical, "MIDI: Zoom vertically", "Needs the Mackie Control setup in Logic");
-
             foreach (var mode in LogicKeyCommands.DialModes)
             {
-                e.AddItem(mode.Id, $"Key: {mode.DisplayName}", LogicKeyCommands.SetupHint(mode.Left, mode.Right));
+                e.AddItem(mode.Id, mode.DisplayName, LogicKeyCommands.SetupHint(mode.Left, mode.Right));
             }
 
             if (!isModifier)
             {
-                e.AddItem(ModeCustom, "Key: Custom shortcut (set the two keys below)", null);
+                e.AddItem(ModeCustom, "Custom shortcut (set the two keys below)", null);
             }
 
             e.SelectSavedOrDefault(isModifier ? ModeSame : ModeDefault);
@@ -155,8 +144,6 @@ namespace Loupedeck.LogicProPlugin
                 speed = Array.Find(Speeds, s => s.Id == DefaultSpeed);
             }
 
-            var boost = actionParameters.GetBoolean(AccelerationControl, false) ? this.AccelerationFactor() : 1;
-
             Int32 steps;
             if (speed.ClicksPerStep > 1)
             {
@@ -173,11 +160,10 @@ namespace Loupedeck.LogicProPlugin
                 }
 
                 this._pending[dialKey] = pending - (steps * speed.ClicksPerStep);
-                steps *= boost;
             }
             else
             {
-                steps = diff * speed.StepsPerClick * boost;
+                steps = diff * speed.StepsPerClick;
             }
 
             return this.Send(mode, steps, actionParameters);
@@ -185,34 +171,7 @@ namespace Loupedeck.LogicProPlugin
 
         private Boolean Send(String mode, Int32 steps, ActionEditorActionParameters actionParameters)
         {
-            switch (mode)
             {
-                case ModeMidiJog:
-                    LogicMidi.SendJog(steps);
-                    return true;
-
-                case ModeMidiZoom:
-                case ModeMidiZoomVertical:
-                    // Zooming is the jog wheel with the Zoom button held, exactly as on the hardware:
-                    // with Zoom down the wheel zooms horizontally and the cursor keys zoom vertically.
-                    LogicMidi.SetButton(MackieButton.Zoom, true);
-                    if (mode == ModeMidiZoomVertical)
-                    {
-                        var button = steps < 0 ? MackieButton.CursorDown : MackieButton.CursorUp;
-                        for (var i = 0; i < Math.Min(Math.Abs(steps), LogicKeySender.MaxRepeats); i++)
-                        {
-                            LogicMidi.SendButton(button);
-                        }
-                    }
-                    else
-                    {
-                        LogicMidi.SendJog(steps);
-                    }
-
-                    LogicMidi.SetButton(MackieButton.Zoom, false);
-                    return true;
-
-                default:
                     var keyMode = LogicKeyCommands.DialModes.FirstOrDefault(m => m.Id == mode);
                     var key = mode == ModeCustom
                         ? GetCustomKey(actionParameters, steps < 0 ? LeftKeyControl : RightKeyControl)
@@ -220,12 +179,24 @@ namespace Loupedeck.LogicProPlugin
 
                     if (key == null)
                     {
+                        PluginLog.Warning($"Dial: no key for mode '{mode}'");
                         return false;
                     }
 
-                    LogicKeySender.Send(this.Plugin, key, Math.Abs(steps),
-                        actionParameters.GetBoolean(CharModeControl, false),
-                        GetNumber(actionParameters, HoldControl, 0));
+                    // A momentary Logic command carries its own hold time; the user's setting can
+                    // only lengthen it.
+                    var hold = Math.Max(GetNumber(actionParameters, HoldControl, 0), keyMode?.HoldMs ?? 0);
+
+                    var now = DateTime.UtcNow;
+                    if (now < this._busyUntil)
+                    {
+                        return true;
+                    }
+
+                    var repeats = 1;
+                    this._busyUntil = now.AddMilliseconds(Math.Max(hold, KeystrokeSpacingMs));
+                    LogicKeySender.Send(this.Plugin, key, repeats,
+                        actionParameters.GetBoolean(CharModeControl, false), hold);
                     return true;
             }
         }
@@ -245,16 +216,6 @@ namespace Loupedeck.LogicProPlugin
             return actionParameters.GetString(ModeControl, ModeDefault);
         }
 
-        // A sustained spin travels faster, while a single click still moves the smallest amount.
-        private Int32 AccelerationFactor()
-        {
-            var now = DateTime.UtcNow;
-            this._streak = now - this._lastTurn < AccelerationWindow ? Math.Min(this._streak + 1, 32) : 0;
-            this._lastTurn = now;
-
-            return 1 + Math.Min(this._streak / 8, 3);
-        }
-
         protected override String GetAdjustmentDisplayName(ActionEditorActionParameters actionParameters)
         {
             var label = actionParameters.GetString(LabelControl, String.Empty);
@@ -263,15 +224,14 @@ namespace Loupedeck.LogicProPlugin
                 return label;
             }
 
-            return this.CurrentMode(actionParameters) switch
+            var mode = this.CurrentMode(actionParameters);
+            if (mode == ModeCustom)
             {
-                ModeMidiJog => "Jog",
-                ModeMidiZoom => "Zoom",
-                ModeMidiZoomVertical => "Zoom V",
-                ModeCustom => "Custom",
-                var mode => LogicKeyCommands.KeyFaceName(
-                    LogicKeyCommands.DialModes.FirstOrDefault(m => m.Id == mode)?.DisplayName ?? "Dial"),
-            };
+                return "Custom";
+            }
+
+            return LogicKeyCommands.KeyFaceName(
+                LogicKeyCommands.DialModes.FirstOrDefault(m => m.Id == mode)?.DisplayName ?? "Dial");
         }
 
         // Slider values can arrive as decimal strings ("50" or "50.0"), which GetInt32 refuses.

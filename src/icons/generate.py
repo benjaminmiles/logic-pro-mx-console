@@ -64,6 +64,8 @@ G = {
             '<path d="M18 104 H110"/>',
     "removefade": '<path d="M24 92 L104 44"/><path d="M24 92 H104"/><path d="M104 44 V92"/>'
                   '<path d="M40 30 L64 54"/><path d="M64 30 L40 54"/>',
+    "divisionfiner": '<path d="M20 64 H108"/><path d="M34 44 V84"/><path d="M50 50 V78"/><path d="M66 44 V84"/>'
+                     '<path d="M82 50 V78"/><path d="M98 44 V84"/>',
     "countin": '<circle cx="26" cy="64" r="8" fill="{c}" stroke="none"/>'
                 '<circle cx="52" cy="64" r="8" fill="{c}" stroke="none"/>'
                 '<circle cx="78" cy="64" r="8" fill="{c}" stroke="none"/>'
@@ -154,6 +156,7 @@ KEY_COMMANDS = {
     "PlayStopReturn": ("transport", "play_return"), "StopPlayLast": ("transport", "stop_last"),
     "CycleToggle": ("transport", "cycle"),
     "Metronome": ("transport", "metronome"), "CountIn": ("transport", "countin"),
+    "DivisionFiner": ("transport", "divisionfiner"), "DivisionCoarser": ("transport", "divisionfiner"),
     "Autopunch": ("transport", "autopunch"), "PunchIn": ("transport", "punchin"),
     "PunchOut": ("transport", "punchout"), "PunchFromSelection": ("transport", "punchsel"), "CaptureRecording": ("record", "record_capture"),
     "Undo": ("edit", "undo"), "Redo": ("edit", "redo"), "SplitAtPlayhead": ("edit", "split"),
@@ -169,20 +172,13 @@ KEY_COMMANDS = {
     "Save": ("project", "save"), "BounceProject": ("project", "bounce"),
 }
 
-MIDI_COMMANDS = {
-    "MidiPlay": "play", "MidiStop": "stop", "MidiRecord": "record", "MidiRewind": "rewind",
-    "MidiFastForward": "forward", "MidiCycle": "cycle", "MidiClick": "metronome", "MidiMarker": "marker",
-    "MidiNudge": "nudge", "MidiDrop": "drop", "MidiReplace": "replace", "MidiScrub": "scrub",
-    "MidiSave": "save", "MidiUndo": "undo", "MidiTrackUp": "cursor_up", "MidiTrackDown": "cursor_down",
-}
-
 DIAL_MODES = {
     "ScrubBars": ("transport", "rewind_one"), "ScrubFast": ("transport", "rewind"),
     "ScrubTransient": ("transport", "transient"), "ScrubDivision": ("transport", "division"),
     "ScrubNudge": ("transport", "nudge"), "ScrubAudio": ("transport", "scrub"),
     "Markers": ("edit", "marker"), "ZoomHorizontal": ("view", "zoomh"), "ZoomVertical": ("view", "zoomv"),
     "SelectTrack": ("track", "selecttrack"), "NudgeRegion": ("edit", "nudge"), "UndoRedo": ("edit", "undoredo"),
-    "RegionGain": ("edit", "gain"), "RegionGainFine": ("edit", "gain"),
+    "Division": ("transport", "divisionfiner"), "RegionGain": ("edit", "gain"), "RegionGainFine": ("edit", "gain"),
 }
 
 ADVANCED = {
@@ -221,11 +217,6 @@ def main():
         write(f"{NAMESPACE}.LogicShortcutCommand___{action_id}", glyph, group)
         count += 1
 
-    for action_id, glyph in MIDI_COMMANDS.items():
-        group = "record" if "Record" in action_id else "midi"
-        write(f"{NAMESPACE}.LogicMidiCommand___{action_id}", glyph, group)
-        count += 1
-
     for action_id, (group, glyph) in DIAL_MODES.items():
         write(f"{NAMESPACE}.LogicDialAdjustment___{action_id}", glyph, group)
         count += 1
@@ -236,7 +227,6 @@ def main():
 
     # Fallbacks for the parameterised actions themselves.
     write(f"{NAMESPACE}.LogicShortcutCommand", "playstop", "transport")
-    write(f"{NAMESPACE}.LogicMidiCommand", "midiplug", "midi")
     write(f"{NAMESPACE}.LogicDialAdjustment", "dial", "advanced")
 
     print(f"wrote {count + 3} icons and symbols into package/")

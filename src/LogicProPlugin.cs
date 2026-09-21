@@ -23,10 +23,13 @@ namespace Loupedeck.LogicProPlugin
         }
 
         // This method is called when the plugin is loaded.
-        public override void Load() =>
-            LogicMidi.Open(System.IO.Path.GetDirectoryName(this.AssemblyFilePath));
+        public override void Load()
+        {
+        }
 
         // This method is called when the plugin is unloaded.
-        public override void Unload() => LogicMidi.Close();
+        public override void Unload()
+        {
+        }
     }
 }

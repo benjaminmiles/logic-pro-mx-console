@@ -13,7 +13,12 @@ namespace Loupedeck.LogicProPlugin
     public record LogicCommand(String Id, String DisplayName, String Group, LogicKey Key);
 
     // A dial action: one key command per tick in each direction, plus an optional press action.
-    public record LogicDialMode(String Id, String DisplayName, LogicKey Left, LogicKey Right, LogicKey Press = null);
+    //
+    // HoldMs is for Logic commands that are momentary — they act while the key is held, and ignore a
+    // tap. The dial holds the key that long for this mode only, so modes that don't need it stay
+    // instant.
+    public record LogicDialMode(String Id, String DisplayName, LogicKey Left, LogicKey Right,
+        LogicKey Press = null, Int32 HoldMs = 0);
 
     // Default Logic Pro key command assignments (U.S. keyboard, "Logic Pro" default key command set).
     // If a user has customised their key commands in Logic (Logic Pro > Key Commands > Edit),
@@ -49,6 +54,8 @@ namespace Loupedeck.LogicProPlugin
             new("PunchIn", "Set Punch In", "Transport", new(VirtualKeyCode.KeyI, Ctrl | Opt | Cmd)),
             new("PunchOut", "Set Punch Out", "Transport", new(VirtualKeyCode.KeyO, Ctrl | Opt | Cmd)),
             new("PunchFromSelection", "Punch from Selection (Option+3)", "Transport", new(VirtualKeyCode.Key3, Opt)),
+            new("DivisionFiner", "Division Finer (Shift+Q)", "Transport", new(VirtualKeyCode.KeyQ, Shift)),
+            new("DivisionCoarser", "Division Coarser (Option+;)", "Transport", new(VirtualKeyCode.Oem1, Opt)),
             new("CountIn", "Count In On/Off", "Transport", new(VirtualKeyCode.KeyK, Shift)),
             new("CaptureRecording", "Capture Recording", "Transport", new(VirtualKeyCode.KeyR, Shift)),
 
@@ -143,7 +150,7 @@ namespace Loupedeck.LogicProPlugin
             // Scrub Rewind / Forward are momentary in Logic — they scrub while the key is down — so
             // pair this mode with a key hold time on the Modifiable Dial.
             new("ScrubAudio", "Audible Scrub (Option+8/9)",
-                Left: new(VirtualKeyCode.Key8, Opt), Right: new(VirtualKeyCode.Key9, Opt)),
+                Left: new(VirtualKeyCode.Key8, Opt), Right: new(VirtualKeyCode.Key9, Opt), HoldMs: 40),
             new("Markers", "Prev / Next Marker (sets locators)",
                 Left: new(VirtualKeyCode.Comma, Opt, ','), Right: new(VirtualKeyCode.Period, Opt, '.'),
                 Press: new(VirtualKeyCode.Oem7, Opt, '\'')),
@@ -157,6 +164,8 @@ namespace Loupedeck.LogicProPlugin
                 Left: new(VirtualKeyCode.ArrowUp), Right: new(VirtualKeyCode.ArrowDown)),
             new("NudgeRegion", "Nudge Region",
                 Left: new(VirtualKeyCode.ArrowLeft, Opt), Right: new(VirtualKeyCode.ArrowRight, Opt)),
+            new("Division", "Division Value (Shift+Q / Option+;)",
+                Left: new(VirtualKeyCode.Oem1, Opt), Right: new(VirtualKeyCode.KeyQ, Shift)),
             new("RegionGain", "Region Gain +/- 1 dB (Option+0/-)",
                 Left: new(VirtualKeyCode.Minus, Opt), Right: new(VirtualKeyCode.Key0, Opt)),
             new("RegionGainFine", "Region Gain +/- 0.1 dB (Shift+Y/J)",

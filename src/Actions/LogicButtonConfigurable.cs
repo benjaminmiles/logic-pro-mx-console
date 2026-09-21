@@ -40,11 +40,6 @@ namespace Loupedeck.LogicProPlugin
 
             e.AddItem(ActionNone, isModifier ? "Nothing different" : "Nothing", null);
 
-            foreach (var command in LogicMidiCommands.All)
-            {
-                e.AddItem(command.Id, $"MIDI: {command.DisplayName}", null);
-            }
-
             foreach (var command in LogicKeyCommands.Commands)
             {
                 e.AddItem(command.Id,
@@ -61,13 +56,6 @@ namespace Loupedeck.LogicProPlugin
             if (id == ActionNone)
             {
                 return false;
-            }
-
-            var midiCommand = LogicMidiCommands.Find(id);
-            if (midiCommand != null)
-            {
-                LogicMidi.SendButton(midiCommand.Note);
-                return true;
             }
 
             var keyCommand = LogicKeyCommands.Commands.FirstOrDefault(c => c.Id == id);
@@ -89,9 +77,7 @@ namespace Loupedeck.LogicProPlugin
             }
 
             var id = this.ChosenAction(actionParameters);
-            return LogicMidiCommands.Find(id)?.DisplayName
-                ?? LogicKeyCommands.Commands.FirstOrDefault(c => c.Id == id)?.DisplayName
-                ?? "Logic Pro";
+            return LogicKeyCommands.Commands.FirstOrDefault(c => c.Id == id)?.DisplayName ?? "Logic Pro";
         }
 
         // The modifier action while the modifier button is held, otherwise the normal one.
