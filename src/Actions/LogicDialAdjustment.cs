@@ -8,7 +8,7 @@ namespace Loupedeck.LogicProPlugin
     public class LogicDialAdjustment : PluginDynamicAdjustment
     {
         public LogicDialAdjustment()
-            : base(hasReset: true)
+            : base(hasReset: false)
         {
             this.DisplayName = "Logic Pro Dial";
             this.GroupName = "Not used";

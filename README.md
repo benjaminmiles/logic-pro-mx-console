@@ -3,17 +3,18 @@
 An unofficial [Logi Actions SDK](https://logitech.github.io/actions-sdk-docs/) plugin that brings Logic Pro
 controls to the MX Creative Console (and other Logi Plugin Service devices).
 
-- **Jog wheel** — continuous timeline scrubbing over MIDI, using Logic's built-in Mackie Control support.
-- **Keypad** — transport, editing, track and window commands.
+- **Dial** - scrub the timeline by bar, division, transient or audibly; zoom; select tracks; nudge regions.
+- **Keypad** - transport, editing, track, view and project commands.
+- **Modifier** - hold one button and every dial and key switches to a second action.
 - The profile switches automatically when Logic Pro is the frontmost app.
 
-Key combinations are written out in words — Control, Option, Shift, Command — rather than as ⌃ ⌥ ⇧ ⌘.
+Key combinations are written out in words - Control, Option, Shift, Command - rather than as ⌃ ⌥ ⇧ ⌘.
 
 Not affiliated with or endorsed by Apple or Logitech. Logic Pro is a trademark of Apple Inc.
 
 ## How it works
 
-Every action sends a Logic key command, and only when Logic Pro is frontmost — the plugin checks before
+Every action sends a Logic key command, and only when Logic Pro is frontmost - the plugin checks before
 sending, so a dial still coasting after you switch apps cannot type into whatever is in front.
 
 Keystrokes are paced, not queued: one per dial event, at least 25 ms apart. Logic takes real time to act
@@ -27,9 +28,12 @@ the dial stops. The cost of pacing is that a hard spin travels no further than a
 | Scrub by Bar | Rewind / Forward (`,` (comma) / `.` (period)) |
 | Scrub Fast | Fast Rewind / Fast Forward (`Shift+,` / `Shift+.`) |
 | Scrub by Transient | Rewind / Forward by Transient (`Control+,` / `Control+.`) |
-| Scrub by Division | `F13` / `F14` — needs assigning |
-| Scrub by Nudge Value | `F15` / `F16` — needs assigning |
-| Audible Scrub | `F17` / `F18` — needs assigning |
+| Scrub by Division \* | Rewind / Forward by Division Value |
+| Scrub by Nudge Value \* | Rewind / Forward by Nudge Value |
+| Audible Scrub \* | Scrub Rewind / Scrub Forward |
+| Region Gain +/- 1 dB \* | Region Gain +1 dB / -1 dB |
+| Region Gain +/- 0.1 dB \* | Region Gain +0.1 dB / -0.1 dB |
+| Division Value \* | Set Next Lower / Higher Division |
 | Prev / Next Marker | `Option+,` / `Option+.` |
 | Zoom Horizontal | `Command+Left` / `Command+Right` |
 | Zoom Vertical | `Command+Up` / `Command+Down` |
@@ -39,9 +43,9 @@ the dial stops. The cost of pacing is that a hard spin travels no further than a
 
 ## Logic key assignments
 
-Twenty-seven Logic commands ship with **no key command at all**, so the plugin cannot reach them until one is
-assigned. The actions that use them name the key in the action list — "Show/Hide Tuner (Option+4)" — and
-show the name alone on the key face.
+Twenty-seven Logic commands ship with **no key command at all**, so the plugin cannot reach them until one
+is assigned. Actions that need one are marked with an asterisk - "Division 1/16 \*" - in the action list.
+Merge the bundled file below and they all work; the key face shows the name alone.
 
 | Logic command | Key | Used by |
 |---|---|---|
@@ -74,7 +78,7 @@ show the name alone on the key face.
 | Set Punch Locators by Regions/Events/Marquee | Control+Option+Shift+P | Punch from Selection |
 
 All twenty-seven sit on Control+Option+Shift, a family Logic's own defaults leave almost entirely free.
-A few clash with window-specific commands — the Score Editor uses this family for fingerings — so Logic
+A few clash with window-specific commands - the Score Editor uses this family for fingerings - so Logic
 may warn while assigning. **Accept** keeps both: the global assignment works everywhere except that one
 window, which is irrelevant for scrubbing, snapping and gain.
 
@@ -86,26 +90,25 @@ these twenty-seven commands and nothing else.
 1. In Logic, press Option+K to open Key Commands.
 2. The `⋯` menu → **Merge Key Commands…** → choose the file.
 
-**Merge**, not Import. Merge adds these assignments and leaves everything else alone — Logic's defaults
+**Merge**, not Import. Merge adds these assignments and leaves everything else alone - Logic's defaults
 and your own customisations both survive, which was verified by initialising a key command set, merging
 this file, and confirming the stock assignments were untouched. **Import** would replace your whole set.
 
 Logic may warn about the Score Editor, which uses this modifier family for fingerings. **Accept** keeps
 both: the global assignment works everywhere except that window.
 
-Nothing in the plugin depends on the file — you can assign the twenty-seven by hand from the table
+Nothing in the plugin depends on the file - you can assign the twenty-seven by hand from the table
 instead, or point individual actions at your own keys with **Custom Shortcut**.
 
-Assign only the ones you want. Every other action works out of the box, and the MIDI actions need none of
-this.
+Assign only the ones you want: every action without an asterisk works out of the box.
 
-Logic's Scrub Rewind and Scrub Forward are momentary — they scrub while the key is held — so set the
-dial's **Hold key for** to 50-100 ms when using Audible Scrub, or each click sends a tap too brief for
-Logic to act on.
+Logic's Scrub Rewind and Scrub Forward are momentary - they scrub while the key is held rather than
+tapped - so Audible Scrub holds its key for 40 ms automatically. The dial's **Hold key for** setting
+exists for pointing a **Custom shortcut** at some other momentary command.
 
 ## Build
 
-Requirements: Logi Options+ and a .NET SDK matching the Logi Plugin Service runtime — .NET 10 as of
+Requirements: Logi Options+ and a .NET SDK matching the Logi Plugin Service runtime - .NET 10 as of
 Plugin API 6.4.
 
 ```bash
@@ -142,7 +145,7 @@ mode let you point any control at the keys your own set uses.
 **I've installed the plugin, but some actions don't work.**
 Most often the key command behind the action has been changed or cleared in Logic. Open Logic's Key
 Commands window (Option+K), search for the command, and check the Key column. The `⋯` menu's **Initialize all
-Key Commands** restores Logic's defaults — export your own set first if you have customisations worth
+Key Commands** restores Logic's defaults - export your own set first if you have customisations worth
 keeping. A few actions (Scrub by Division Value, by Nudge Value, Audible Scrub) ship unassigned in Logic
 by design and need a one-time assignment, described above. Any action can also be pointed at a different
 key with the **Custom Shortcut** action.
@@ -151,8 +154,7 @@ key with the **Custom Shortcut** action.
 No. Every key command checks that Logic Pro is frontmost before sending, and is dropped otherwise.
 
 **Does this plugin collect personal data?**
-No. It sends key commands and MIDI messages to Logic Pro on your own machine, and communicates with
-nothing else.
+No. It sends key commands to Logic Pro on your own machine, and communicates with nothing else.
 
 ## License
 
