@@ -20,14 +20,20 @@ PACKAGE = os.path.join(HERE, "..", "package")
 
 COLORS = {
     "transport": "#4ADE80",  # green
-    "edit": "#FBBF24",       # amber
+    "edit": "#D6B98C",       # tan — cooler than yellow, which belongs to Solo alone
     "track": "#60A5FA",      # blue
     "view": "#C084FC",       # purple
     "project": "#94A3B8",    # slate
     "midi": "#2DD4BF",       # teal
     "advanced": "#F472B6",   # pink
-    "record": "#F87171",     # red — the one exception to grouping by colour, since red means record
+    "record": "#F87171",     # red
+    "solo": "#FACC15",       # yellow
+    "mute": "#2DD4BF",       # blue-green
+    "input": "#FB923C",      # orange
 }
+
+# Channel strip actions take the colour of the button they mirror in Logic — M blue-green, S yellow,
+# R red, I orange — because that is the colour the user is already looking for on screen.
 
 # Glyphs are drawn on a 128x128 canvas. {c} is replaced with the group colour.
 G = {
@@ -64,6 +70,17 @@ G = {
             '<path d="M18 104 H110"/>',
     "removefade": '<path d="M24 92 L104 44"/><path d="M24 92 H104"/><path d="M104 44 V92"/>'
                   '<path d="M40 30 L64 54"/><path d="M64 30 L40 54"/>',
+    "snap": '<path d="M24 34 H104"/><path d="M24 64 H104"/><path d="M24 94 H104"/>'
+            '<path d="M44 24 V104"/><path d="M84 24 V104"/>'
+            '<circle cx="84" cy="64" r="12" fill="{c}" stroke="none"/>',
+    "snapoff": '<path d="M24 34 H104"/><path d="M24 64 H104"/><path d="M24 94 H104"/>'
+               '<path d="M44 24 V104"/><path d="M84 24 V104"/><path d="M28 100 L100 28"/>',
+    "div4": '<path d="M28 30 H100"/><path d="M28 98 H100"/><path d="M78 40 V88"/><path d="M50 40 V64 H78"/>',
+    "div8": '<circle cx="42" cy="46" r="16"/><circle cx="42" cy="84" r="16"/>'
+            '<circle cx="86" cy="46" r="16"/><circle cx="86" cy="84" r="16"/>',
+    "div16": '<path d="M24 64 H104"/><path d="M34 44 V84"/><path d="M52 44 V84"/><path d="M70 44 V84"/><path d="M88 44 V84"/>',
+    "div32": '<path d="M20 64 H108"/><path d="M28 48 V80"/><path d="M42 48 V80"/><path d="M56 48 V80"/>'
+             '<path d="M70 48 V80"/><path d="M84 48 V80"/><path d="M98 48 V80"/>',
     "divisionfiner": '<path d="M20 64 H108"/><path d="M34 44 V84"/><path d="M50 50 V78"/><path d="M66 44 V84"/>'
                      '<path d="M82 50 V78"/><path d="M98 44 V84"/>',
     "countin": '<circle cx="26" cy="64" r="8" fill="{c}" stroke="none"/>'
@@ -156,15 +173,20 @@ KEY_COMMANDS = {
     "PlayStopReturn": ("transport", "play_return"), "StopPlayLast": ("transport", "stop_last"),
     "CycleToggle": ("transport", "cycle"),
     "Metronome": ("transport", "metronome"), "CountIn": ("transport", "countin"),
+    "Division4": ("transport", "div4"), "Division8": ("transport", "div8"),
+    "Division16": ("transport", "div16"), "Division32": ("transport", "div32"),
     "DivisionFiner": ("transport", "divisionfiner"), "DivisionCoarser": ("transport", "divisionfiner"),
     "Autopunch": ("transport", "autopunch"), "PunchIn": ("transport", "punchin"),
     "PunchOut": ("transport", "punchout"), "PunchFromSelection": ("transport", "punchsel"), "CaptureRecording": ("record", "record_capture"),
     "Undo": ("edit", "undo"), "Redo": ("edit", "redo"), "SplitAtPlayhead": ("edit", "split"),
     "JoinRegions": ("edit", "join"), "RepeatRegions": ("edit", "repeat"), "LoopRegion": ("edit", "loop"),
-    "Quantize": ("edit", "quantize"), "BounceInPlace": ("edit", "bounce"), "CreateMarker": ("edit", "marker"), "MuteRegion": ("edit", "muteregion"),
+    "Quantize": ("edit", "quantize"), "BounceInPlace": ("edit", "bounce"), "CreateMarker": ("edit", "marker"),
+    "SnapToggle": ("edit", "snapoff"), "SnapSmart": ("edit", "snap"), "SnapBar": ("edit", "snap"),
+    "SnapBeat": ("edit", "snap"), "SnapDivision": ("edit", "div16"), "SnapTicks": ("edit", "div32"), "MuteRegion": ("mute", "muteregion"),
     "RemoveFadeIn": ("edit", "removefade"), "LowLatency": ("project", "lowlatency"),
     "NewTrack": ("track", "newtrack"), "DuplicateTrack": ("track", "duplicate"),
-    "SoloTrack": ("track", "solo"), "RecordEnableTrack": ("record", "recarm"),
+    "MuteTrack": ("mute", "mute"), "SoloTrack": ("solo", "solo"),
+    "SoloSelected": ("solo", "solo"), "InputMonitor": ("input", "recarm"), "RecordEnableTrack": ("record", "recarm"),
     "Mixer": ("view", "mixer"), "Editors": ("view", "editors"), "PianoRoll": ("view", "pianoroll"),
     "Library": ("view", "library"), "Inspector": ("view", "inspector"), "SmartControls": ("view", "smart"),
     "Browsers": ("view", "browser"), "LoopBrowser": ("view", "loopbrowser"),

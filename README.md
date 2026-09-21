@@ -39,44 +39,62 @@ the dial stops. The cost of pacing is that a hard spin travels no further than a
 
 ## Logic key assignments
 
-Sixteen Logic commands ship with **no key command at all**, so the plugin cannot reach them until one is
+Twenty-seven Logic commands ship with **no key command at all**, so the plugin cannot reach them until one is
 assigned. The actions that use them name the key in the action list — "Show/Hide Tuner (Option+4)" — and
 show the name alone on the key face.
 
 | Logic command | Key | Used by |
 |---|---|---|
-| Rewind by Division Value | Option+1 | Scrub by Division, Rewind by Division |
-| Forward by Division Value | Option+2 | Scrub by Division, Forward by Division |
-| Set Punch Locators by Regions/Events/Marquee | Option+3 | Punch from Selection |
-| Show/Hide Tuner | Option+4 | Show/Hide Tuner |
-| Remove Fades | Option+5 | Remove Fades |
-| Rewind by Nudge Value | Option+6 | Scrub by Nudge Value |
-| Forward by Nudge Value | Option+7 | Scrub by Nudge Value |
-| Scrub Rewind | Option+8 | Audible Scrub |
-| Scrub Forward | Option+9 | Audible Scrub |
-| Region Gain +1 dB | Option+0 | Region Gain dial |
-| Region Gain -1 dB | Option+- | Region Gain dial |
-| Region Gain +0.1 dB | Shift+J | Region Gain (fine) dial |
-| Region Gain -0.1 dB | Shift+Y | Region Gain (fine) dial |
-| Toggle Low Latency Monitoring Mode | Option+H | Low Latency Mode |
-| Play or Stop and Go to Last Locate Position | Option+J | Play / Stop & Return |
-| Stop or Play From Last Position | Option+= | Stop / Resume |
+| Rewind by Division Value | Control+Option+Shift+1 | Scrub by Division, Rewind by Division |
+| Forward by Division Value | Control+Option+Shift+2 | Scrub by Division, Forward by Division |
+| Rewind by Nudge Value | Control+Option+Shift+3 | Scrub by Nudge Value |
+| Forward by Nudge Value | Control+Option+Shift+4 | Scrub by Nudge Value |
+| Scrub Rewind | Control+Option+Shift+5 | Audible Scrub |
+| Scrub Forward | Control+Option+Shift+6 | Audible Scrub |
+| Region Gain +1 dB | Control+Option+Shift+7 | Region Gain dial |
+| Region Gain -1 dB | Control+Option+Shift+8 | Region Gain dial |
+| Region Gain +0.1 dB | Control+Option+Shift+9 | Region Gain (fine) dial |
+| Region Gain -0.1 dB | Control+Option+Shift+0 | Region Gain (fine) dial |
+| Set Next Higher Division | Control+Option+Shift+Q | Division Finer, Division Value dial |
+| Set Next Lower Division | Control+Option+Shift+W | Division Coarser, Division Value dial |
+| Set Division Value to 1/4 Note | Control+Option+Shift+E | Division 1/4 |
+| Set Division Value to 1/8 Note | Control+Option+Shift+Y | Division 1/8 |
+| Set Division Value to 1/16 Note | Control+Option+Shift+U | Division 1/16 |
+| Set Division Value to 1/32 Note | Control+Option+Shift+; | Division 1/32 |
+| Snap Mode: Smart | Control+Option+Shift+A | Snap: Smart |
+| Snap Mode: Bar | Control+Option+Shift+B | Snap: Bar |
+| Snap Mode: Beat | Control+Option+Shift+F | Snap: Beat |
+| Snap Mode: Division | Control+Option+Shift+G | Snap: Division |
+| Snap Mode: Ticks | Control+Option+Shift+M | Snap: Ticks |
+| Toggle Low Latency Monitoring Mode | Control+Option+Shift+H | Low Latency Mode |
+| Play or Stop and Go to Last Locate Position | Control+Option+Shift+J | Play / Stop & Return |
+| Stop or Play From Last Position | Control+Option+Shift+K | Stop / Resume |
+| Remove Fades | Control+Option+Shift+L | Remove Fades |
+| Show/Hide Tuner | Control+Option+Shift+O | Show/Hide Tuner |
+| Set Punch Locators by Regions/Events/Marquee | Control+Option+Shift+P | Punch from Selection |
 
-Every combination was checked against Logic's complete default key set: none of them collide.
+All twenty-seven sit on Control+Option+Shift, a family Logic's own defaults leave almost entirely free.
+A few clash with window-specific commands — the Score Editor uses this family for fingerings — so Logic
+may warn while assigning. **Accept** keeps both: the global assignment works everywhere except that one
+window, which is irrelevant for scrubbing, snapping and gain.
 
 ### Importing them
 
-[`keycommands/logic-pro-mx-console.logikcs`](keycommands/logic-pro-mx-console.logikcs) is Logic's default
-U.S. key command set plus exactly these sixteen — verified byte for byte against the set Logic ships.
+[`keycommands/logic-pro-mx-console.logikcs`](keycommands/logic-pro-mx-console.logikcs) defines exactly
+these twenty-seven commands and nothing else.
 
 1. In Logic, press Option+K to open Key Commands.
-2. **Export your own set first** if you have customisations: the `⋯` menu → **Save As…**
-3. `⋯` menu → **Import Key Commands…** → choose the file.
+2. The `⋯` menu → **Merge Key Commands…** → choose the file.
 
-Importing **replaces** your whole key command set with Logic's defaults plus these sixteen. That is
-harmless if you have never customised Logic's key commands, and destructive if you have — hence step 2.
-To avoid that entirely, assign the sixteen by hand from the table above; nothing in the plugin depends on
-the file itself.
+**Merge**, not Import. Merge adds these assignments and leaves everything else alone — Logic's defaults
+and your own customisations both survive, which was verified by initialising a key command set, merging
+this file, and confirming the stock assignments were untouched. **Import** would replace your whole set.
+
+Logic may warn about the Score Editor, which uses this modifier family for fingerings. **Accept** keeps
+both: the global assignment works everywhere except that window.
+
+Nothing in the plugin depends on the file — you can assign the twenty-seven by hand from the table
+instead, or point individual actions at your own keys with **Custom Shortcut**.
 
 Assign only the ones you want. Every other action works out of the box, and the MIDI actions need none of
 this.
