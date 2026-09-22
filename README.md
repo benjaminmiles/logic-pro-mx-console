@@ -75,7 +75,7 @@ Merge the bundled [key command file](keycommands/logic-pro-mx-console.logikcs) t
 | Region Gain -1 dB | Ctrl+Opt+Cmd+Shift+H | Region Gain dial |
 | Region Gain +0.1 dB | Ctrl+Opt+Cmd+Shift+J | Region Gain (fine) dial |
 | Region Gain -0.1 dB | Ctrl+Opt+Cmd+Shift+K | Region Gain (fine) dial |
-| Set Next Higher Division | Ctrl+Opt+Cmd+Shift+Q | Division Finer, Division Value dial |
+| Set Next Higher Division | Ctrl+Opt+Cmd+Shift+R | Division Finer, Division Value dial |
 | Set Next Lower Division | Ctrl+Opt+Cmd+Shift+W | Division Coarser, Division Value dial |
 | Set Division Value to 1/4 Note | Ctrl+Opt+Cmd+Shift+E | Division 1/4 |
 | Set Division Value to 1/16 Note | Ctrl+Opt+Cmd+Shift+T | Division 1/16 |
@@ -95,7 +95,8 @@ Merge the bundled [key command file](keycommands/logic-pro-mx-console.logikcs) t
 
 All twenty-seven sit on Control+Option+Command+Shift. That is every modifier at once, which nobody
 would want to type - but nobody has to: the file below assigns them. It is the only modifier family
-Logic's defaults leave essentially empty, so none of these collide with a Logic command in any window.
+Logic's defaults leave essentially empty, so none of these collide with a Logic command in any window. Q is avoided because macOS reserves
+Shift+Command+Q for Log Out and treats any chord containing it as taken.
 
 ### Importing them
 
