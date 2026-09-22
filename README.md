@@ -36,10 +36,15 @@ on the console follows - the same key on the dialpad plays and stops as usual, o
 depending on the mode. The setting is remembered across restarts. Return mode uses Logic's *Play or
 Stop and Go to Last Locate Position*, one of the commands the key command file assigns.
 
-**Toggles show their state.** Metronome, Cycle, Count In, Autopunch, Snap to Grid and Low Latency show
-On or Off on the key face. Logic never reports its settings, so this is the state the plugin last set:
-correct as long as you switch them from the console. If you change one in Logic and the key ends up
-inverted, **long-press** the key to correct the indicator without sending anything.
+### Toggle keys
+
+Metronome, Cycle, Count In, Autopunch, Snap to Grid and Low Latency show **On** or **Off** on the key
+face, and flip on each press.
+
+Logic never reports its settings, so the key shows the state the plugin last set. That is correct as
+long as you switch these from the console. If you change one in Logic itself, the key ends up inverted:
+**hold the key** for about a second and the indicator flips without sending anything to Logic. The
+state is remembered across restarts.
 
 **Division Toggle**, also in Transport, works the same way for Logic's Division: one action for each
 pair of values - 1/4 and 1/16, say - and each press sets the other, with the key face showing which is
@@ -190,6 +195,10 @@ Restart Logi Plugin Service (Options+ settings → Restart Logi Plugin Service).
 copy of each configured action and can stop noticing edits after the plugin has been reloaded several
 times, which happens during development and can happen once after a plugin update. A fresh service picks
 up edits immediately.
+
+**A toggle key says On when the setting is off (or the other way round).**
+The key shows the state the plugin last set, because Logic does not report its settings. Hold the key
+for about a second: the indicator flips without changing anything in Logic. Then it is back in step.
 
 **Does the plugin type into other applications?**
 No. Every key command checks that Logic Pro is frontmost before sending, and is dropped otherwise.
