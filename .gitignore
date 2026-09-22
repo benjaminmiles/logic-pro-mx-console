@@ -400,3 +400,6 @@ FodyWeavers.xsd
 .DS_Storebin/
 obj/
 src/package/bin/logicmidihost
+
+# Packaged plugin; published on the GitHub releases page instead
+build/
