@@ -91,6 +91,9 @@ G = {
              '<path d="M70 48 V80"/><path d="M84 48 V80"/><path d="M98 48 V80"/>',
     "divisionfiner": '<path d="M20 64 H108"/><path d="M34 44 V84"/><path d="M50 50 V78"/><path d="M66 44 V84"/>'
                      '<path d="M82 50 V78"/><path d="M98 44 V84"/>',
+    "divtoggle": '<path d="M22 50 H60"/><path d="M30 38 V62"/><path d="M45 42 V58"/><path d="M60 38 V62"/>'
+                 '<path d="M68 78 H106"/><path d="M72 68 V88"/><path d="M80 68 V88"/><path d="M88 68 V88"/><path d="M96 68 V88"/><path d="M104 68 V88"/>'
+                 '<path d="M100 44 L112 54 L100 64"/><path d="M28 64 L16 74 L28 84"/>',
     "stopmode": '<rect x="30" y="44" width="34" height="40" rx="6" fill="{c}" stroke="none"/>'
                 '<path d="M100 42 V78 a12 12 0 0 1 -12 12 H74"/><path d="M84 78 L72 90 L84 102"/>',
     "countin": '<circle cx="26" cy="64" r="8" fill="{c}" stroke="none"/>'
@@ -216,7 +219,7 @@ DIAL_MODES = {
 
 ADVANCED = {
     "LogicDialConfigurable": "jog", "LogicButtonConfigurable": "button",
-    "LogicCustomShortcutCommand": "shortcut", "LogicModifierCommand": "modifier",
+    "LogicCustomShortcutCommand": "shortcut", "LogicDivisionToggleCommand": "divtoggle", "LogicModifierCommand": "modifier",
 }
 
 
