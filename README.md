@@ -118,6 +118,11 @@ cd src && dotnet build
 
 `dotnet build` links the plugin into Logi Plugin Service and reloads it.
 
+After many reloads the service can stop applying edits made to configured actions - the panel shows the
+new settings while the plugin still receives the old ones. Restart Logi Plugin Service from the Options+
+settings and it clears. This is a development artefact of hot reloading; a normally installed plugin is
+loaded once.
+
 Package for distribution:
 
 ```bash
@@ -151,10 +156,10 @@ by design and need a one-time assignment, described above. Any action can also b
 key with the **Custom Shortcut** action.
 
 **I changed a Modifiable Button or Dial's settings and it still does the old thing.**
-Remove the action from the key or dial and drag it on again. In Options+ a configurable action's settings
-are part of its identity, so editing them can leave the control bound to the values it had when you first
-dropped it there. Plain actions - anything from the Transport, Edit, Track, View or Project groups - have
-no settings and never do this.
+Restart Logi Plugin Service (Options+ settings → Restart Logi Plugin Service). The service keeps its own
+copy of each configured action and can stop noticing edits after the plugin has been reloaded several
+times, which happens during development and can happen once after a plugin update. A fresh service picks
+up edits immediately.
 
 **Does the plugin type into other applications?**
 No. Every key command checks that Logic Pro is frontmost before sending, and is dropped otherwise.
