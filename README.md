@@ -12,6 +12,23 @@ Key combinations are written out in words - Control, Option, Shift, Command - ra
 
 Not affiliated with or endorsed by Apple or Logitech. Logic Pro is a trademark of Apple Inc.
 
+## Layout
+
+The dialpad, as it ships:
+
+![MX Creative Dialpad layout: Play/Record, Undo/Redo, Zoom on the roller, Scrub on the dial, Modifier and Punch In/Out on the lower buttons](docs/images/dialpad.jpg)
+
+| Control | Normal | With Modifier held |
+|---|---|---|
+| Big dial | Scrub by Division | Scrub by Bar |
+| Roller | Zoom Horizontal | Zoom Vertical |
+| Upper-left dial | Play / Stop | Record |
+| Upper-right dial | Undo | Redo |
+| Lower-left button | **Modifier** - hold it | |
+| Lower-right button | Set Punch In | Set Punch Out |
+
+Hold the Modifier with a thumb and every other control on the pad takes its second job.
+
 ## How it works
 
 Every action sends a Logic key command, and only when Logic Pro is frontmost - the plugin checks before
