@@ -79,6 +79,9 @@ G = {
     "div8": '<circle cx="42" cy="46" r="16"/><circle cx="42" cy="84" r="16"/>'
             '<circle cx="86" cy="46" r="16"/><circle cx="86" cy="84" r="16"/>',
     "div16": '<path d="M24 64 H104"/><path d="M34 44 V84"/><path d="M52 44 V84"/><path d="M70 44 V84"/><path d="M88 44 V84"/>',
+    "div48": '<path d="M20 64 H108"/><path d="M30 46 V82"/><path d="M42 46 V82"/><path d="M54 46 V82"/>'
+             '<path d="M74 46 V82"/><path d="M86 46 V82"/><path d="M98 46 V82"/><path d="M30 34 H54"/><path d="M74 34 H98"/>',
+    "div192": '<path d="M16 64 H112"/>' + ''.join(f'<path d="M{x} 50 V78"/>' for x in range(22,112,9)),
     "div32": '<path d="M20 64 H108"/><path d="M28 48 V80"/><path d="M42 48 V80"/><path d="M56 48 V80"/>'
              '<path d="M70 48 V80"/><path d="M84 48 V80"/><path d="M98 48 V80"/>',
     "divisionfiner": '<path d="M20 64 H108"/><path d="M34 44 V84"/><path d="M50 50 V78"/><path d="M66 44 V84"/>'
@@ -173,8 +176,8 @@ KEY_COMMANDS = {
     "PlayStopReturn": ("transport", "play_return"), "StopPlayLast": ("transport", "stop_last"),
     "CycleToggle": ("transport", "cycle"),
     "Metronome": ("transport", "metronome"), "CountIn": ("transport", "countin"),
-    "Division4": ("transport", "div4"), "Division8": ("transport", "div8"),
-    "Division16": ("transport", "div16"), "Division32": ("transport", "div32"),
+    "Division4": ("transport", "div4"), "Division16": ("transport", "div16"),
+    "Division48": ("transport", "div48"), "Division192": ("transport", "div192"),
     "DivisionFiner": ("transport", "divisionfiner"), "DivisionCoarser": ("transport", "divisionfiner"),
     "Autopunch": ("record", "autopunch"), "PunchIn": ("record", "punchin"),
     "PunchOut": ("record", "punchout"), "PunchFromSelection": ("record", "punchsel"), "CaptureRecording": ("record", "record_capture"),

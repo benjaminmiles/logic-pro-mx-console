@@ -78,9 +78,9 @@ Merge the bundled [key command file](keycommands/logic-pro-mx-console.logikcs) t
 | Set Next Higher Division | Ctrl+Opt+Cmd+Shift+Q | Division Finer, Division Value dial |
 | Set Next Lower Division | Ctrl+Opt+Cmd+Shift+W | Division Coarser, Division Value dial |
 | Set Division Value to 1/4 Note | Ctrl+Opt+Cmd+Shift+E | Division 1/4 |
-| Set Division Value to 1/8 Note | Ctrl+Opt+Cmd+Shift+R | Division 1/8 |
 | Set Division Value to 1/16 Note | Ctrl+Opt+Cmd+Shift+T | Division 1/16 |
-| Set Division Value to 1/32 Note | Ctrl+Opt+Cmd+Shift+Y | Division 1/32 |
+| Set Division Value to 1/32 Triplet (1/48) | Ctrl+Opt+Cmd+Shift+S | Division 1/48 |
+| Set Division Value to 1/128 Triplet (1/192) | Ctrl+Opt+Cmd+Shift+V | Division 1/192 |
 | Snap Mode: Smart | Ctrl+Opt+Cmd+Shift+A | Snap: Smart |
 | Snap Mode: Bar | Ctrl+Opt+Cmd+Shift+B | Snap: Bar |
 | Snap Mode: Beat | Ctrl+Opt+Cmd+Shift+C | Snap: Beat |

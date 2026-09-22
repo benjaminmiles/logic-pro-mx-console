@@ -57,9 +57,9 @@ namespace Loupedeck.LogicProPlugin
             new("DivisionFiner", "Division Finer *", "Transport", new(VirtualKeyCode.KeyQ, Ctrl | Opt | Cmd | Shift)),
             new("DivisionCoarser", "Division Coarser *", "Transport", new(VirtualKeyCode.KeyW, Ctrl | Opt | Cmd | Shift)),
             new("Division4", "Division 1/4 *", "Transport", new(VirtualKeyCode.KeyE, Ctrl | Opt | Cmd | Shift)),
-            new("Division8", "Division 1/8 *", "Transport", new(VirtualKeyCode.KeyR, Ctrl | Opt | Cmd | Shift)),
             new("Division16", "Division 1/16 *", "Transport", new(VirtualKeyCode.KeyT, Ctrl | Opt | Cmd | Shift)),
-            new("Division32", "Division 1/32 *", "Transport", new(VirtualKeyCode.KeyY, Ctrl | Opt | Cmd | Shift)),
+            new("Division48", "Division 1/48 *", "Transport", new(VirtualKeyCode.KeyS, Ctrl | Opt | Cmd | Shift)),
+            new("Division192", "Division 1/192 *", "Transport", new(VirtualKeyCode.KeyV, Ctrl | Opt | Cmd | Shift)),
             new("CountIn", "Count In On/Off", "Transport", new(VirtualKeyCode.KeyK, Shift)),
             new("CaptureRecording", "Capture Recording", "Transport", new(VirtualKeyCode.KeyR, Shift)),
 
