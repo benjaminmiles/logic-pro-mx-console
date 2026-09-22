@@ -57,4 +57,32 @@ namespace Loupedeck.LogicProPlugin
             }
         }
     }
+
+    // Paces a dial's keystrokes so the playhead stops when the hand does.
+    //
+    // Sending a keystroke is not instant, and Logic takes real time to act on each one. A fast spin
+    // delivers dial events faster than that, and queueing them - or sending several per event - builds
+    // a backlog that keeps the playhead moving after the dial stops. So each dial sends at most one
+    // keystroke per event, and drops events that arrive while the previous keystroke is still being
+    // dealt with. A held key (a momentary Logic command) reserves the keyboard for its hold time.
+    public sealed class KeystrokePacer
+    {
+        // Minimum spacing between keystrokes; Logic keeps up with this, and stops dead at it.
+        public const Int32 SpacingMs = 25;
+
+        private DateTime _busyUntil = DateTime.MinValue;
+
+        // True if a keystroke may be sent now, reserving the keyboard for it; false to drop the event.
+        public Boolean TryReserve(Int32 holdMs)
+        {
+            var now = DateTime.UtcNow;
+            if (now < this._busyUntil)
+            {
+                return false;
+            }
+
+            this._busyUntil = now.AddMilliseconds(Math.Max(holdMs, SpacingMs));
+            return true;
+        }
+    }
 }

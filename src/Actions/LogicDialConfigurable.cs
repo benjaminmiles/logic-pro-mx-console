@@ -42,16 +42,7 @@ namespace Loupedeck.LogicProPlugin
         // Leftover clicks per configured dial, so a slow turn still adds up to a step.
         private readonly ConcurrentDictionary<UInt64, Int32> _pending = new();
 
-        // When the keyboard is expected to be free again. Sending a keystroke is not instant, so a
-        // fast spin can deliver events faster than they can be sent; queueing them makes the dial
-        // carry on moving after it stops. Events arriving before this moment are dropped instead,
-        // which keeps a spin at a steady rate and stops it dead with the dial.
-        private DateTime _busyUntil = DateTime.MinValue;
-
-        // Minimum spacing between keystrokes. Logic takes time to act on each one, so sending them
-        // in bursts builds a backlog inside Logic itself, which no amount of throttling here can
-        // undo. One keystroke per event, paced, keeps the dial and the playhead in step.
-        private const Int32 KeystrokeSpacingMs = 25;
+        private readonly KeystrokePacer _pacer = new();
 
         public LogicDialConfigurable()
             : base(hasReset: false)
@@ -187,15 +178,12 @@ namespace Loupedeck.LogicProPlugin
                     // only lengthen it.
                     var hold = Math.Max(GetNumber(actionParameters, HoldControl, 0), keyMode?.HoldMs ?? 0);
 
-                    var now = DateTime.UtcNow;
-                    if (now < this._busyUntil)
+                    if (!this._pacer.TryReserve(hold))
                     {
                         return true;
                     }
 
-                    var repeats = 1;
-                    this._busyUntil = now.AddMilliseconds(Math.Max(hold, KeystrokeSpacingMs));
-                    LogicKeySender.Send(this.Plugin, key, repeats,
+                    LogicKeySender.Send(this.Plugin, key, 1,
                         actionParameters.GetBoolean(CharModeControl, false), hold);
                     return true;
             }

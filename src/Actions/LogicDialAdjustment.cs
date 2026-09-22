@@ -4,9 +4,15 @@ namespace Loupedeck.LogicProPlugin
     using System.Linq;
 
     // Dial actions: each entry in LogicKeyCommands.DialModes appears as its own rotation action.
-    // Turning sends one key command per tick; pressing sends the mode's press command, if any.
+    //
+    // Besides living on a dial, these can be put on a keypad key, where Options+ makes them toggles:
+    // press the key and the dialpad's dial takes that function until pressed again. Either way the
+    // keystrokes are paced exactly as the Modifiable Dial paces its own, so the playhead stops when
+    // the dial does.
     public class LogicDialAdjustment : PluginDynamicAdjustment
     {
+        private readonly KeystrokePacer _pacer = new();
+
         public LogicDialAdjustment()
             : base(hasReset: false)
         {
@@ -27,8 +33,12 @@ namespace Loupedeck.LogicProPlugin
                 return;
             }
 
-            var key = diff < 0 ? mode.Left : mode.Right;
-            LogicKeySender.Send(this.Plugin, key, Math.Abs(diff));
+            if (!this._pacer.TryReserve(mode.HoldMs))
+            {
+                return;
+            }
+
+            LogicKeySender.Send(this.Plugin, diff < 0 ? mode.Left : mode.Right, 1, holdMs: mode.HoldMs);
         }
 
         protected override void RunCommand(String actionParameter)
