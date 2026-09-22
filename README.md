@@ -54,6 +54,7 @@ the dial stops. The cost of pacing is that a hard spin travels no further than a
 | Zoom Vertical | `Command+Up` / `Command+Down` |
 | Select Track | `Up` / `Down` arrows |
 | Nudge Region | `Option+Left` / `Option+Right` |
+| Slip Region | `Control+Option+Left` / `Control+Option+Right` |
 | Undo / Redo | `Command+Z` / `Shift+Command+Z` |
 
 ## Logic key assignments

@@ -80,6 +80,10 @@ namespace Loupedeck.LogicProPlugin
             new("SnapBeat", "Snap: Beat *", "Edit", new(VirtualKeyCode.KeyC, Ctrl | Opt | Cmd | Shift)),
             new("SnapDivision", "Snap: Division *", "Edit", new(VirtualKeyCode.KeyD, Ctrl | Opt | Cmd | Shift)),
             new("SnapTicks", "Snap: Ticks *", "Edit", new(VirtualKeyCode.KeyF, Ctrl | Opt | Cmd | Shift)),
+            new("NudgeLeft", "Nudge Left", "Edit", new(VirtualKeyCode.ArrowLeft, Opt)),
+            new("NudgeRight", "Nudge Right", "Edit", new(VirtualKeyCode.ArrowRight, Opt)),
+            new("SlipLeft", "Slip Left", "Edit", new(VirtualKeyCode.ArrowLeft, Ctrl | Opt)),
+            new("SlipRight", "Slip Right", "Edit", new(VirtualKeyCode.ArrowRight, Ctrl | Opt)),
             new("CreateMarker", "Create Marker", "Edit", new(VirtualKeyCode.Oem7, Opt, '\'')),
 
             // Tracks
@@ -184,6 +188,8 @@ namespace Loupedeck.LogicProPlugin
                 Left: new(VirtualKeyCode.KeyH, Ctrl | Opt | Cmd | Shift), Right: new(VirtualKeyCode.KeyG, Ctrl | Opt | Cmd | Shift)),
             new("RegionGainFine", "Region Gain +/- 0.1 dB *",
                 Left: new(VirtualKeyCode.KeyK, Ctrl | Opt | Cmd | Shift), Right: new(VirtualKeyCode.KeyJ, Ctrl | Opt | Cmd | Shift)),
+            new("SlipRegion", "Slip Region",
+                Left: new(VirtualKeyCode.ArrowLeft, Ctrl | Opt), Right: new(VirtualKeyCode.ArrowRight, Ctrl | Opt)),
             new("UndoRedo", "Undo / Redo",
                 Left: new(VirtualKeyCode.KeyZ, Cmd), Right: new(VirtualKeyCode.KeyZ, Cmd | Shift)),
         };

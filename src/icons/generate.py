@@ -70,6 +70,11 @@ G = {
             '<path d="M18 104 H110"/>',
     "removefade": '<path d="M24 92 L104 44"/><path d="M24 92 H104"/><path d="M104 44 V92"/>'
                   '<path d="M40 30 L64 54"/><path d="M64 30 L40 54"/>',
+    "nudgeleft": '<rect x="50" y="48" width="52" height="32" rx="5" fill="{c}" stroke="none"/><path d="M36 52 L20 64 L36 76"/>',
+    "nudgeright": '<rect x="26" y="48" width="52" height="32" rx="5" fill="{c}" stroke="none"/><path d="M92 52 L108 64 L92 76"/>',
+    "slipleft": '<rect x="30" y="46" width="68" height="36" rx="5"/><path d="M40 64 H74"/><path d="M50 54 L40 64 L50 74"/>',
+    "slipright": '<rect x="30" y="46" width="68" height="36" rx="5"/><path d="M54 64 H88"/><path d="M78 54 L88 64 L78 74"/>',
+    "slip": '<rect x="24" y="46" width="80" height="36" rx="5"/><path d="M40 64 H88"/><path d="M50 54 L40 64 L50 74"/><path d="M78 54 L88 64 L78 74"/>',
     "snap": '<path d="M24 34 H104"/><path d="M24 64 H104"/><path d="M24 94 H104"/>'
             '<path d="M44 24 V104"/><path d="M84 24 V104"/>'
             '<circle cx="84" cy="64" r="12" fill="{c}" stroke="none"/>',
@@ -183,7 +188,8 @@ KEY_COMMANDS = {
     "PunchOut": ("record", "punchout"), "PunchFromSelection": ("record", "punchsel"), "CaptureRecording": ("record", "record_capture"),
     "Undo": ("edit", "undo"), "Redo": ("edit", "redo"), "SplitAtPlayhead": ("edit", "split"),
     "JoinRegions": ("edit", "join"), "RepeatRegions": ("edit", "repeat"), "LoopRegion": ("edit", "loop"),
-    "Quantize": ("edit", "quantize"), "BounceInPlace": ("edit", "bounce"), "CreateMarker": ("edit", "marker"),
+    "Quantize": ("edit", "quantize"), "BounceInPlace": ("edit", "bounce"), "CreateMarker": ("edit", "marker"), "NudgeLeft": ("edit", "nudgeleft"), "NudgeRight": ("edit", "nudgeright"),
+    "SlipLeft": ("edit", "slipleft"), "SlipRight": ("edit", "slipright"),
     "SnapToggle": ("edit", "snapoff"), "SnapSmart": ("edit", "snap"), "SnapBar": ("edit", "snap"),
     "SnapBeat": ("edit", "snap"), "SnapDivision": ("edit", "div16"), "SnapTicks": ("edit", "div32"), "MuteRegion": ("mute", "muteregion"),
     "RemoveFadeIn": ("edit", "removefade"), "LowLatency": ("project", "lowlatency"),
@@ -202,7 +208,7 @@ DIAL_MODES = {
     "ScrubTransient": ("transport", "transient"), "ScrubDivision": ("transport", "division"),
     "ScrubNudge": ("transport", "nudge"), "ScrubAudio": ("transport", "scrub"),
     "Markers": ("edit", "marker"), "ZoomHorizontal": ("view", "zoomh"), "ZoomVertical": ("view", "zoomv"),
-    "SelectTrack": ("track", "selecttrack"), "NudgeRegion": ("edit", "nudge"), "UndoRedo": ("edit", "undoredo"),
+    "SelectTrack": ("track", "selecttrack"), "NudgeRegion": ("edit", "nudge"), "UndoRedo": ("edit", "undoredo"), "SlipRegion": ("edit", "slip"),
     "Division": ("transport", "divisionfiner"), "RegionGain": ("edit", "gain"), "RegionGainFine": ("edit", "gain"),
 }
 
