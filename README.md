@@ -155,7 +155,7 @@ the dial stops. The cost of pacing is that a hard spin travels no further than a
 
 ## Logic key assignments
 
-Twenty-seven Logic commands ship with **no key command at all**, so the plugin cannot reach them until one
+Twenty-seven Logic commands ship with **no default key command**, so the plugin cannot reach them until one
 is assigned. Actions that need one are marked with an asterisk - "Division 1/16 \*" - in the action list.
 
 Merge the bundled [key command file](keycommands/logic-pro-mx-console.logikcs) to assign the actions below automatically, or set them manually.
