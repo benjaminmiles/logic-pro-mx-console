@@ -50,7 +50,7 @@ namespace Loupedeck.LogicProPlugin
             this.Name = "LogicDial";
             this.DisplayName = "Modifiable Dial";
             this.GroupName = "Advanced";
-            this.Description = "Scrub, zoom or navigate Logic Pro, over MIDI or with key commands";
+            this.Description = "Scrub, zoom or navigate Logic Pro with key commands";
 
             this.ActionEditor.AddControlEx(
                 new ActionEditorListbox(ModeControl, "Turning:", "What the dial does when you turn it"));
