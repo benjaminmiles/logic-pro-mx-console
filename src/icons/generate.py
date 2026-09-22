@@ -157,9 +157,6 @@ G = {
              '<path d="M92 64 H106"/>',
     "jog": '<circle cx="64" cy="64" r="32"/><circle cx="64" cy="64" r="8" fill="{c}" stroke="none"/>'
            '<path d="M64 32 V42"/><path d="M64 86 V96"/><path d="M32 64 H42"/><path d="M86 64 H96"/>',
-                '<circle cx="64" cy="48" r="6" fill="{c}" stroke="none"/>'
-                '<circle cx="80" cy="56" r="6" fill="{c}" stroke="none"/>'
-                '<circle cx="64" cy="82" r="6" fill="{c}" stroke="none"/>',
     "drop": '<path d="M64 24 C 44 52 34 66 34 80 a30 30 0 0 0 60 0 c0 -14 -10 -28 -30 -56 Z"/>',
     "replace": '<path d="M34 50 H84 a12 12 0 0 1 0 24 H44"/><path d="M52 36 L34 50 L52 64"/>'
                '<circle cx="64" cy="94" r="8" fill="{c}" stroke="none"/>',
