@@ -64,7 +64,7 @@ namespace Loupedeck.LogicProPlugin
                 return false;
             }
 
-            LogicKeySender.Send(this.Plugin, keyCommand.Key);
+            LogicKeySender.Send(this.Plugin, keyCommand.Id == "PlayStop" ? LogicStopMode.PlayStopKey : keyCommand.Key);
             return true;
         }
 

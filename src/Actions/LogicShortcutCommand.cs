@@ -33,7 +33,7 @@ namespace Loupedeck.LogicProPlugin
                 return;
             }
 
-            LogicKeySender.Send(this.Plugin, command.Key);
+            LogicKeySender.Send(this.Plugin, command.Id == "PlayStop" ? LogicStopMode.PlayStopKey : command.Key);
         }
     }
 }

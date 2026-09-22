@@ -91,6 +91,8 @@ G = {
              '<path d="M70 48 V80"/><path d="M84 48 V80"/><path d="M98 48 V80"/>',
     "divisionfiner": '<path d="M20 64 H108"/><path d="M34 44 V84"/><path d="M50 50 V78"/><path d="M66 44 V84"/>'
                      '<path d="M82 50 V78"/><path d="M98 44 V84"/>',
+    "stopmode": '<rect x="30" y="44" width="34" height="40" rx="6" fill="{c}" stroke="none"/>'
+                '<path d="M100 42 V78 a12 12 0 0 1 -12 12 H74"/><path d="M84 78 L72 90 L84 102"/>',
     "countin": '<circle cx="26" cy="64" r="8" fill="{c}" stroke="none"/>'
                 '<circle cx="52" cy="64" r="8" fill="{c}" stroke="none"/>'
                 '<circle cx="78" cy="64" r="8" fill="{c}" stroke="none"/>'
@@ -255,6 +257,9 @@ def main():
     for class_name, glyph in ADVANCED.items():
         write(f"{NAMESPACE}.{class_name}", glyph, "advanced")
         count += 1
+
+    write(f"{NAMESPACE}.LogicStopModeCommand", "stopmode", "transport")
+    count += 1
 
     # Fallbacks for the parameterised actions themselves.
     write(f"{NAMESPACE}.LogicShortcutCommand", "playstop", "transport")

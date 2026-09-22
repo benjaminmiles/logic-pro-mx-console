@@ -27,6 +27,15 @@ Dialpad Default Profile
 
 Hold the Modifier with a thumb and every other control on the pad takes its second action.
 
+### Stop Mode
+
+Logic's Stop button can either stay put or jump back to where playback started, chosen from a menu on
+the transport with no key command behind it. The **Stop Mode** key (Transport group) makes that choice
+from the console instead: press it to switch between *Stay* and *Return*, and every Play / Stop button
+on the console follows - the same key on the dialpad plays and stops as usual, or plays and returns,
+depending on the mode. The setting is remembered across restarts. Return mode uses Logic's *Play or
+Stop and Go to Last Locate Position*, one of the commands the key command file assigns.
+
 ## How it works
 
 Every action sends a Logic key command, but only when Logic Pro is the focused application - the plugin checks before

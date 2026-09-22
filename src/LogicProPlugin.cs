@@ -23,9 +23,7 @@ namespace Loupedeck.LogicProPlugin
         }
 
         // This method is called when the plugin is loaded.
-        public override void Load()
-        {
-        }
+        public override void Load() => LogicStopMode.Load(this);
 
         // This method is called when the plugin is unloaded.
         public override void Unload()

@@ -144,6 +144,8 @@ namespace Loupedeck.LogicProPlugin
             return bracket < 0 ? trimmed : trimmed[..bracket];
         }
 
+        public static LogicCommand Find(String id) => Commands.FirstOrDefault(c => c.Id == id);
+
         public static readonly IReadOnlyList<LogicDialMode> DialModes = new List<LogicDialMode>
         {
             new("ScrubBars", "Scrub by Bar",
