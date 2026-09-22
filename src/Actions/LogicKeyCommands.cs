@@ -9,8 +9,9 @@ namespace Loupedeck.LogicProPlugin
     // which sends the character instead of the virtual key code.
     public record LogicKey(VirtualKeyCode Key, ModifierKey Modifiers = ModifierKey.None, Char Character = default);
 
-    // A button action that sends one Logic Pro key command.
-    public record LogicCommand(String Id, String DisplayName, String Group, LogicKey Key);
+    // A button action that sends one Logic Pro key command. Toggle marks commands that switch a
+    // Logic setting on and off: the key face then shows the state the plugin last set.
+    public record LogicCommand(String Id, String DisplayName, String Group, LogicKey Key, Boolean Toggle = false);
 
     // A dial action: one key command per tick in each direction, plus an optional press action.
     //
@@ -48,9 +49,9 @@ namespace Loupedeck.LogicProPlugin
             // Logic's own combined transport commands, both shipped unassigned (see README).
             new("PlayStopReturn", "Play / Stop & Return *", "Transport", new(VirtualKeyCode.KeyM, Ctrl | Opt | Cmd | Shift)),
             new("StopPlayLast", "Stop / Resume *", "Transport", new(VirtualKeyCode.KeyN, Ctrl | Opt | Cmd | Shift)),
-            new("CycleToggle", "Cycle On/Off", "Transport", new(VirtualKeyCode.KeyC)),
-            new("Metronome", "Metronome On/Off", "Transport", new(VirtualKeyCode.KeyK)),
-            new("Autopunch", "Autopunch On/Off", "Transport", new(VirtualKeyCode.KeyP, Ctrl | Opt | Cmd)),
+            new("CycleToggle", "Cycle", "Transport", new(VirtualKeyCode.KeyC), Toggle: true),
+            new("Metronome", "Metronome", "Transport", new(VirtualKeyCode.KeyK), Toggle: true),
+            new("Autopunch", "Autopunch", "Transport", new(VirtualKeyCode.KeyP, Ctrl | Opt | Cmd), Toggle: true),
             new("PunchIn", "Set Punch In", "Transport", new(VirtualKeyCode.KeyI, Ctrl | Opt | Cmd)),
             new("PunchOut", "Set Punch Out", "Transport", new(VirtualKeyCode.KeyO, Ctrl | Opt | Cmd)),
             new("PunchFromSelection", "Punch from Selection *", "Transport", new(VirtualKeyCode.KeyP, Ctrl | Opt | Cmd | Shift)),
@@ -60,7 +61,7 @@ namespace Loupedeck.LogicProPlugin
             new("Division16", "Division 1/16 *", "Transport", new(VirtualKeyCode.KeyT, Ctrl | Opt | Cmd | Shift)),
             new("Division48", "Division 1/48 *", "Transport", new(VirtualKeyCode.KeyS, Ctrl | Opt | Cmd | Shift)),
             new("Division192", "Division 1/192 *", "Transport", new(VirtualKeyCode.KeyV, Ctrl | Opt | Cmd | Shift)),
-            new("CountIn", "Count In On/Off", "Transport", new(VirtualKeyCode.KeyK, Shift)),
+            new("CountIn", "Count In", "Transport", new(VirtualKeyCode.KeyK, Shift), Toggle: true),
             new("CaptureRecording", "Capture Recording", "Transport", new(VirtualKeyCode.KeyR, Shift)),
 
             // Editing
@@ -78,7 +79,7 @@ namespace Loupedeck.LogicProPlugin
             new("GainDownFine", "Region Gain -0.1 dB *", "Edit", new(VirtualKeyCode.KeyK, Ctrl | Opt | Cmd | Shift)),
             new("MuteRegion", "Mute Region", "Edit", new(VirtualKeyCode.KeyM, Ctrl)),
             new("RemoveFadeIn", "Remove Fades *", "Edit", new(VirtualKeyCode.KeyZ, Ctrl | Opt | Cmd | Shift)),
-            new("SnapToggle", "Snap to Grid On/Off", "Edit", new(VirtualKeyCode.KeyG, Cmd)),
+            new("SnapToggle", "Snap to Grid", "Edit", new(VirtualKeyCode.KeyG, Cmd), Toggle: true),
             new("SnapSmart", "Snap: Smart *", "Edit", new(VirtualKeyCode.KeyA, Ctrl | Opt | Cmd | Shift)),
             new("SnapBar", "Snap: Bar *", "Edit", new(VirtualKeyCode.KeyB, Ctrl | Opt | Cmd | Shift)),
             new("SnapBeat", "Snap: Beat *", "Edit", new(VirtualKeyCode.KeyC, Ctrl | Opt | Cmd | Shift)),
@@ -113,7 +114,7 @@ namespace Loupedeck.LogicProPlugin
             new("Tuner", "Show/Hide Tuner *", "View", new(VirtualKeyCode.KeyX, Ctrl | Opt | Cmd | Shift)),
             new("ZoomToFit", "Zoom to Fit", "View", new(VirtualKeyCode.KeyZ)),
 
-            new("LowLatency", "Low Latency Mode *", "Project", new(VirtualKeyCode.KeyL, Ctrl | Opt | Cmd | Shift)),
+            new("LowLatency", "Low Latency *", "Project", new(VirtualKeyCode.KeyL, Ctrl | Opt | Cmd | Shift), Toggle: true),
 
             // Project
             new("Save", "Save", "Project", new(VirtualKeyCode.KeyS, Cmd)),

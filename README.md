@@ -36,6 +36,11 @@ on the console follows - the same key on the dialpad plays and stops as usual, o
 depending on the mode. The setting is remembered across restarts. Return mode uses Logic's *Play or
 Stop and Go to Last Locate Position*, one of the commands the key command file assigns.
 
+**Toggles show their state.** Metronome, Cycle, Count In, Autopunch, Snap to Grid and Low Latency show
+On or Off on the key face. Logic never reports its settings, so this is the state the plugin last set:
+correct as long as you switch them from the console. If you change one in Logic and the key ends up
+inverted, **long-press** the key to correct the indicator without sending anything.
+
 **Division Toggle**, also in Transport, works the same way for Logic's Division: one action for each
 pair of values - 1/4 and 1/16, say - and each press sets the other, with the key face showing which is
 current.
