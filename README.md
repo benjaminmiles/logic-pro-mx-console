@@ -249,7 +249,7 @@ matching `DefaultProfile7x.lp5`.
 
 ## Install
 
-1. Download the latest `LogicPro_x_y.lplug4` from the releases page and double-click it. Logi Plugin
+1. Download the latest `LogicPro_x_y.lplug4` from the [releases page](https://github.com/benjaminmiles/logic-pro-mx-console/releases/latest) and double-click it. Logi Plugin
    Service installs it and Options+ lists Logic Pro under Installed Plugins.
 2. **Logi Plugin Service** needs Accessibility permission (System Settings → Privacy & Security →
    Accessibility), or no key command can reach Logic.
