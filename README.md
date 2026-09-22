@@ -1,5 +1,7 @@
 # Logic Pro plugin for Logitech MX Creative Console
 
+![MX Creative Keypad and Dialpad running the Logic Pro profile](docs/images/console.jpg)
+
 An unofficial [Logi Actions SDK](https://logitech.github.io/actions-sdk-docs/) plugin that brings Logic Pro
 controls to the MX Creative Console (and other Logi Plugin Service devices).
 
@@ -15,8 +17,6 @@ Not affiliated with or endorsed by Apple or Logitech.
 The plugin ships default profiles for the Keypad, the Dialpad and the Actions Ring. They appear the
 first time Logic Pro is added in Options+ after the plugin is installed. Every control can be
 reassigned, and the pages below are only a starting point.
-
-![MX Creative Keypad and Dialpad running the Logic Pro profile](docs/images/console.jpg)
 
 ### Dialpad
 
