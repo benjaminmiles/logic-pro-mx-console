@@ -43,23 +43,23 @@ namespace Loupedeck.LogicProPlugin
             new("RewindTransient", "Rewind Transient", "Transport", new(VirtualKeyCode.Comma, Ctrl, ',')),
             new("ForwardTransient", "Forward Transient", "Transport", new(VirtualKeyCode.Period, Ctrl, '.')),
             // These two need the matching one-off assignment in Logic (see README).
-            new("RewindDivision", "Rewind by Division *", "Transport", new(VirtualKeyCode.Key1, Ctrl | Opt | Shift)),
-            new("ForwardDivision", "Forward by Division *", "Transport", new(VirtualKeyCode.Key2, Ctrl | Opt | Shift)),
+            new("RewindDivision", "Rewind by Division *", "Transport", new(VirtualKeyCode.Key4, Ctrl | Opt | Cmd | Shift)),
+            new("ForwardDivision", "Forward by Division *", "Transport", new(VirtualKeyCode.Key5, Ctrl | Opt | Cmd | Shift)),
             // Logic's own combined transport commands, both shipped unassigned (see README).
-            new("PlayStopReturn", "Play / Stop & Return *", "Transport", new(VirtualKeyCode.KeyJ, Ctrl | Opt | Shift)),
-            new("StopPlayLast", "Stop / Resume *", "Transport", new(VirtualKeyCode.KeyK, Ctrl | Opt | Shift)),
+            new("PlayStopReturn", "Play / Stop & Return *", "Transport", new(VirtualKeyCode.KeyM, Ctrl | Opt | Cmd | Shift)),
+            new("StopPlayLast", "Stop / Resume *", "Transport", new(VirtualKeyCode.KeyN, Ctrl | Opt | Cmd | Shift)),
             new("CycleToggle", "Cycle On/Off", "Transport", new(VirtualKeyCode.KeyC)),
             new("Metronome", "Metronome On/Off", "Transport", new(VirtualKeyCode.KeyK)),
             new("Autopunch", "Autopunch On/Off", "Transport", new(VirtualKeyCode.KeyP, Ctrl | Opt | Cmd)),
             new("PunchIn", "Set Punch In", "Transport", new(VirtualKeyCode.KeyI, Ctrl | Opt | Cmd)),
             new("PunchOut", "Set Punch Out", "Transport", new(VirtualKeyCode.KeyO, Ctrl | Opt | Cmd)),
-            new("PunchFromSelection", "Punch from Selection *", "Transport", new(VirtualKeyCode.KeyP, Ctrl | Opt | Shift)),
-            new("DivisionFiner", "Division Finer *", "Transport", new(VirtualKeyCode.KeyQ, Ctrl | Opt | Shift)),
-            new("DivisionCoarser", "Division Coarser *", "Transport", new(VirtualKeyCode.KeyW, Ctrl | Opt | Shift)),
-            new("Division4", "Division 1/4 *", "Transport", new(VirtualKeyCode.KeyE, Ctrl | Opt | Shift)),
-            new("Division8", "Division 1/8 *", "Transport", new(VirtualKeyCode.KeyY, Ctrl | Opt | Shift)),
-            new("Division16", "Division 1/16 *", "Transport", new(VirtualKeyCode.KeyU, Ctrl | Opt | Shift)),
-            new("Division32", "Division 1/32 *", "Transport", new(VirtualKeyCode.Oem1, Ctrl | Opt | Shift)),
+            new("PunchFromSelection", "Punch from Selection *", "Transport", new(VirtualKeyCode.KeyP, Ctrl | Opt | Cmd | Shift)),
+            new("DivisionFiner", "Division Finer *", "Transport", new(VirtualKeyCode.KeyQ, Ctrl | Opt | Cmd | Shift)),
+            new("DivisionCoarser", "Division Coarser *", "Transport", new(VirtualKeyCode.KeyW, Ctrl | Opt | Cmd | Shift)),
+            new("Division4", "Division 1/4 *", "Transport", new(VirtualKeyCode.KeyE, Ctrl | Opt | Cmd | Shift)),
+            new("Division8", "Division 1/8 *", "Transport", new(VirtualKeyCode.KeyR, Ctrl | Opt | Cmd | Shift)),
+            new("Division16", "Division 1/16 *", "Transport", new(VirtualKeyCode.KeyT, Ctrl | Opt | Cmd | Shift)),
+            new("Division32", "Division 1/32 *", "Transport", new(VirtualKeyCode.KeyY, Ctrl | Opt | Cmd | Shift)),
             new("CountIn", "Count In On/Off", "Transport", new(VirtualKeyCode.KeyK, Shift)),
             new("CaptureRecording", "Capture Recording", "Transport", new(VirtualKeyCode.KeyR, Shift)),
 
@@ -73,13 +73,13 @@ namespace Loupedeck.LogicProPlugin
             new("Quantize", "Quantize", "Edit", new(VirtualKeyCode.KeyQ)),
             new("BounceInPlace", "Bounce in Place", "Edit", new(VirtualKeyCode.KeyB, Ctrl)),
             new("MuteRegion", "Mute Region", "Edit", new(VirtualKeyCode.KeyM, Ctrl)),
-            new("RemoveFadeIn", "Remove Fades *", "Edit", new(VirtualKeyCode.KeyL, Ctrl | Opt | Shift)),
+            new("RemoveFadeIn", "Remove Fades *", "Edit", new(VirtualKeyCode.KeyZ, Ctrl | Opt | Cmd | Shift)),
             new("SnapToggle", "Snap to Grid On/Off", "Edit", new(VirtualKeyCode.KeyG, Cmd)),
-            new("SnapSmart", "Snap: Smart *", "Edit", new(VirtualKeyCode.KeyA, Ctrl | Opt | Shift)),
-            new("SnapBar", "Snap: Bar *", "Edit", new(VirtualKeyCode.KeyB, Ctrl | Opt | Shift)),
-            new("SnapBeat", "Snap: Beat *", "Edit", new(VirtualKeyCode.KeyF, Ctrl | Opt | Shift)),
-            new("SnapDivision", "Snap: Division *", "Edit", new(VirtualKeyCode.KeyG, Ctrl | Opt | Shift)),
-            new("SnapTicks", "Snap: Ticks *", "Edit", new(VirtualKeyCode.KeyM, Ctrl | Opt | Shift)),
+            new("SnapSmart", "Snap: Smart *", "Edit", new(VirtualKeyCode.KeyA, Ctrl | Opt | Cmd | Shift)),
+            new("SnapBar", "Snap: Bar *", "Edit", new(VirtualKeyCode.KeyB, Ctrl | Opt | Cmd | Shift)),
+            new("SnapBeat", "Snap: Beat *", "Edit", new(VirtualKeyCode.KeyC, Ctrl | Opt | Cmd | Shift)),
+            new("SnapDivision", "Snap: Division *", "Edit", new(VirtualKeyCode.KeyD, Ctrl | Opt | Cmd | Shift)),
+            new("SnapTicks", "Snap: Ticks *", "Edit", new(VirtualKeyCode.KeyF, Ctrl | Opt | Cmd | Shift)),
             new("CreateMarker", "Create Marker", "Edit", new(VirtualKeyCode.Oem7, Opt, '\'')),
 
             // Tracks
@@ -102,10 +102,10 @@ namespace Loupedeck.LogicProPlugin
             new("Browsers", "Show Browsers", "View", new(VirtualKeyCode.KeyF)),
             new("LoopBrowser", "Show Loop Browser", "View", new(VirtualKeyCode.KeyO)),
             new("Automation", "Show Automation", "View", new(VirtualKeyCode.KeyA)),
-            new("Tuner", "Show/Hide Tuner *", "View", new(VirtualKeyCode.KeyO, Ctrl | Opt | Shift)),
+            new("Tuner", "Show/Hide Tuner *", "View", new(VirtualKeyCode.KeyX, Ctrl | Opt | Cmd | Shift)),
             new("ZoomToFit", "Zoom to Fit", "View", new(VirtualKeyCode.KeyZ)),
 
-            new("LowLatency", "Low Latency Mode *", "Project", new(VirtualKeyCode.KeyH, Ctrl | Opt | Shift)),
+            new("LowLatency", "Low Latency Mode *", "Project", new(VirtualKeyCode.KeyL, Ctrl | Opt | Cmd | Shift)),
 
             // Project
             new("Save", "Save", "Project", new(VirtualKeyCode.KeyS, Cmd)),
@@ -124,9 +124,9 @@ namespace Loupedeck.LogicProPlugin
         // Lists and menus name the key to assign — "Rewind by Division (F13)" — but a key face has no
         // room for it, so the device shows the name alone.
         // Commands Logic ships unassigned, which the bundled key command file sets up. They all sit
-        // on Control+Option, a family Logic's own defaults barely touch.
+        // on Control+Option+Command+Shift, which Logic's own defaults use for six keys only.
         private static Boolean NeedsSetup(LogicKey key) =>
-            key.Modifiers == (ModifierKey.Control | ModifierKey.Option | ModifierKey.Shift);
+            key.Modifiers == (ModifierKey.Control | ModifierKey.Option | ModifierKey.Command | ModifierKey.Shift);
 
         public static String KeyFaceName(String displayName)
         {
@@ -157,14 +157,14 @@ namespace Loupedeck.LogicProPlugin
             // "Learn by Key Label" captures whatever key arrives, so a single key is far easier to
             // assign than a three-key combination, and F13-F19 are untouched by Logic's defaults.
             new("ScrubDivision", "Scrub by Division *",
-                Left: new(VirtualKeyCode.Key1, Ctrl | Opt | Shift), Right: new(VirtualKeyCode.Key2, Ctrl | Opt | Shift)),
+                Left: new(VirtualKeyCode.Key4, Ctrl | Opt | Cmd | Shift), Right: new(VirtualKeyCode.Key5, Ctrl | Opt | Cmd | Shift)),
             new("ScrubNudge", "Scrub by Nudge Value *",
-                Left: new(VirtualKeyCode.Key3, Ctrl | Opt | Shift), Right: new(VirtualKeyCode.Key4, Ctrl | Opt | Shift)),
+                Left: new(VirtualKeyCode.Key6, Ctrl | Opt | Cmd | Shift), Right: new(VirtualKeyCode.Key7, Ctrl | Opt | Cmd | Shift)),
 
             // Scrub Rewind / Forward are momentary in Logic — they scrub while the key is down — so
             // pair this mode with a key hold time on the Modifiable Dial.
             new("ScrubAudio", "Audible Scrub *",
-                Left: new(VirtualKeyCode.Key5, Ctrl | Opt | Shift), Right: new(VirtualKeyCode.Key6, Ctrl | Opt | Shift), HoldMs: 40),
+                Left: new(VirtualKeyCode.Key8, Ctrl | Opt | Cmd | Shift), Right: new(VirtualKeyCode.Key9, Ctrl | Opt | Cmd | Shift), HoldMs: 40),
             new("Markers", "Prev / Next Marker (sets locators)",
                 Left: new(VirtualKeyCode.Comma, Opt, ','), Right: new(VirtualKeyCode.Period, Opt, '.'),
                 Press: new(VirtualKeyCode.Oem7, Opt, '\'')),
@@ -179,11 +179,11 @@ namespace Loupedeck.LogicProPlugin
             new("NudgeRegion", "Nudge Region",
                 Left: new(VirtualKeyCode.ArrowLeft, Opt), Right: new(VirtualKeyCode.ArrowRight, Opt)),
             new("Division", "Division Value *",
-                Left: new(VirtualKeyCode.KeyW, Ctrl | Opt | Shift), Right: new(VirtualKeyCode.KeyQ, Ctrl | Opt | Shift)),
+                Left: new(VirtualKeyCode.KeyW, Ctrl | Opt | Cmd | Shift), Right: new(VirtualKeyCode.KeyQ, Ctrl | Opt | Cmd | Shift)),
             new("RegionGain", "Region Gain +/- 1 dB *",
-                Left: new(VirtualKeyCode.Key8, Ctrl | Opt | Shift), Right: new(VirtualKeyCode.Key7, Ctrl | Opt | Shift)),
+                Left: new(VirtualKeyCode.KeyH, Ctrl | Opt | Cmd | Shift), Right: new(VirtualKeyCode.KeyG, Ctrl | Opt | Cmd | Shift)),
             new("RegionGainFine", "Region Gain +/- 0.1 dB *",
-                Left: new(VirtualKeyCode.Key0, Ctrl | Opt | Shift), Right: new(VirtualKeyCode.Key9, Ctrl | Opt | Shift)),
+                Left: new(VirtualKeyCode.KeyK, Ctrl | Opt | Cmd | Shift), Right: new(VirtualKeyCode.KeyJ, Ctrl | Opt | Cmd | Shift)),
             new("UndoRedo", "Undo / Redo",
                 Left: new(VirtualKeyCode.KeyZ, Cmd), Right: new(VirtualKeyCode.KeyZ, Cmd | Shift)),
         };
