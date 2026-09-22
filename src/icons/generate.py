@@ -66,6 +66,10 @@ G = {
              '<path d="M64 96 L80 52"/><circle cx="64" cy="98" r="7" fill="{c}" stroke="none"/>',
     "muteregion": '<rect x="24" y="46" width="52" height="36" rx="6"/><path d="M88 50 L112 78"/><path d="M112 50 L88 78"/>',
     "lowlatency": '<path d="M70 20 L34 72 H62 L58 108 L94 56 H66 Z" fill="{c}" stroke="none"/>',
+    "gainup": '<path d="M26 92 V70"/><path d="M46 92 V56"/><path d="M66 92 V42"/><path d="M18 104 H76"/>'
+              '<path d="M96 88 V40"/><path d="M84 52 L96 40 L108 52"/>',
+    "gaindown": '<path d="M26 92 V42"/><path d="M46 92 V56"/><path d="M66 92 V70"/><path d="M18 104 H76"/>'
+                '<path d="M96 40 V88"/><path d="M84 76 L96 88 L108 76"/>',
     "gain": '<path d="M26 92 V66"/><path d="M50 92 V50"/><path d="M74 92 V34"/><path d="M98 92 V58"/>'
             '<path d="M18 104 H110"/>',
     "removefade": '<path d="M24 92 L104 44"/><path d="M24 92 H104"/><path d="M104 44 V92"/>'
@@ -197,6 +201,7 @@ KEY_COMMANDS = {
     "SlipLeft": ("edit", "slipleft"), "SlipRight": ("edit", "slipright"),
     "SnapToggle": ("edit", "snapoff"), "SnapSmart": ("edit", "snap"), "SnapBar": ("edit", "snap"),
     "SnapBeat": ("edit", "snap"), "SnapDivision": ("edit", "div16"), "SnapTicks": ("edit", "div32"), "MuteRegion": ("mute", "muteregion"),
+    "GainUp": ("edit", "gainup"), "GainDown": ("edit", "gaindown"), "GainUpFine": ("edit", "gainup"), "GainDownFine": ("edit", "gaindown"),
     "RemoveFadeIn": ("edit", "removefade"), "LowLatency": ("project", "lowlatency"),
     "NewTrack": ("track", "newtrack"), "DuplicateTrack": ("track", "duplicate"),
     "MuteTrack": ("mute", "mute"), "SoloTrack": ("solo", "solo"),

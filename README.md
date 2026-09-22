@@ -85,10 +85,10 @@ Merge the bundled [key command file](keycommands/logic-pro-mx-console.logikcs) t
 | Forward by Nudge Value | Ctrl+Opt+Cmd+Shift+7 | Scrub by Nudge Value |
 | Scrub Rewind | Ctrl+Opt+Cmd+Shift+8 | Audible Scrub |
 | Scrub Forward | Ctrl+Opt+Cmd+Shift+9 | Audible Scrub |
-| Region Gain +1 dB | Ctrl+Opt+Cmd+Shift+G | Region Gain dial |
-| Region Gain -1 dB | Ctrl+Opt+Cmd+Shift+H | Region Gain dial |
-| Region Gain +0.1 dB | Ctrl+Opt+Cmd+Shift+J | Region Gain (fine) dial |
-| Region Gain -0.1 dB | Ctrl+Opt+Cmd+Shift+K | Region Gain (fine) dial |
+| Region Gain +1 dB | Ctrl+Opt+Cmd+Shift+G | Region Gain dial, Region Gain +1 dB |
+| Region Gain -1 dB | Ctrl+Opt+Cmd+Shift+H | Region Gain dial, Region Gain -1 dB |
+| Region Gain +0.1 dB | Ctrl+Opt+Cmd+Shift+J | Region Gain (fine) dial, Region Gain +0.1 dB |
+| Region Gain -0.1 dB | Ctrl+Opt+Cmd+Shift+K | Region Gain (fine) dial, Region Gain -0.1 dB |
 | Set Next Higher Division | Ctrl+Opt+Cmd+Shift+R | Division Finer, Division Value dial |
 | Set Next Lower Division | Ctrl+Opt+Cmd+Shift+W | Division Coarser, Division Value dial |
 | Set Division Value to 1/4 Note | Ctrl+Opt+Cmd+Shift+E | Division 1/4 |
