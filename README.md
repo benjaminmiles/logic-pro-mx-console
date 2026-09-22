@@ -8,13 +8,11 @@ controls to the MX Creative Console (and other Logi Plugin Service devices).
 - **Modifier** - hold one button and every dial and key switches to a second action.
 - The profile switches automatically when Logic Pro is the frontmost app.
 
-Key combinations are written out in words - Control, Option, Shift, Command - rather than as ⌃ ⌥ ⇧ ⌘.
-
-Not affiliated with or endorsed by Apple or Logitech. Logic Pro is a trademark of Apple Inc.
+Not affiliated with or endorsed by Apple or Logitech.
 
 ## Layout
 
-The dialpad, as it ships:
+Dialpad Default Profile
 
 ![MX Creative Dialpad layout: Play/Record, Undo/Redo, Zoom on the roller, Scrub on the dial, Modifier and Punch In/Out on the lower buttons](docs/images/dialpad.jpg)
 
@@ -27,11 +25,11 @@ The dialpad, as it ships:
 | Lower-left button | **Modifier** - hold it | |
 | Lower-right button | Set Punch In | Set Punch Out |
 
-Hold the Modifier with a thumb and every other control on the pad takes its second job.
+Hold the Modifier with a thumb and every other control on the pad takes its second action.
 
 ## How it works
 
-Every action sends a Logic key command, and only when Logic Pro is frontmost - the plugin checks before
+Every action sends a Logic key command, but only when Logic Pro is the focused application - the plugin checks before
 sending, so a dial still coasting after you switch apps cannot type into whatever is in front.
 
 Keystrokes are paced, not queued: one per dial event, at least 25 ms apart. Logic takes real time to act
@@ -62,7 +60,8 @@ the dial stops. The cost of pacing is that a hard spin travels no further than a
 
 Twenty-seven Logic commands ship with **no key command at all**, so the plugin cannot reach them until one
 is assigned. Actions that need one are marked with an asterisk - "Division 1/16 \*" - in the action list.
-Merge the bundled file below and they all work; the key face shows the name alone.
+
+Merge the bundled [`keycommands/logic-pro-mx-console.logikcs`](key command file) to auto assign the actions below, or set them manually.
 
 | Logic command | Key | Used by |
 |---|---|---|
@@ -156,8 +155,6 @@ logiplugintool verify ./LogicPro_1_0.lplug4
    **All Actions → Installed Plugins → Logic Pro**.
 
 ## FAQ
-
-Draft answers for the marketplace listing.
 
 **Does this plugin require a specific keyboard layout?**
 The plugin assumes the standard QWERTY English (US) layout and Logic's default key command set. Other
