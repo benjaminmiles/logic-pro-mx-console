@@ -257,9 +257,14 @@ def main():
         write(f"{NAMESPACE}.LogicDialAdjustment___{action_id}", glyph, group)
         count += 1
 
+    SHORT_NAMES = {"LogicDialConfigurable": "LogicDial", "LogicButtonConfigurable": "LogicButton",
+                   "LogicCustomShortcutCommand": "LogicCustomShortcut"}
     for class_name, glyph in ADVANCED.items():
         write(f"{NAMESPACE}.{class_name}", glyph, "advanced")
         count += 1
+        if class_name in SHORT_NAMES:
+            write(SHORT_NAMES[class_name], glyph, "advanced")
+            count += 1
 
     write(f"{NAMESPACE}.LogicStopModeCommand", "stopmode", "transport")
     write(f"{NAMESPACE}.LogicDivisionToggleCommand", "divtoggle", "transport")
