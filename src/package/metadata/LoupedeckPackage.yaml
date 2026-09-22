@@ -12,7 +12,7 @@ name: LogicPro
 displayName: Logic Pro
 
 # Short description of the plugin.
-description: Jog wheel scrubbing and transport, editing and view commands for Logic Pro.
+description: Scrub, edit and navigate Logic Pro from the MX Creative Console dial, keypad and Actions Ring.
 
 # Name of the plugin library file.
 pluginFileName: LogicProPlugin.dll
