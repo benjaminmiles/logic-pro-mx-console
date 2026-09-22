@@ -24,7 +24,6 @@ COLORS = {
     "track": "#60A5FA",      # blue
     "view": "#C084FC",       # purple
     "project": "#94A3B8",    # slate
-    "midi": "#2DD4BF",       # teal
     "advanced": "#F472B6",   # pink
     "record": "#F87171",     # red
     "solo": "#FACC15",       # yellow
@@ -158,7 +157,6 @@ G = {
              '<path d="M92 64 H106"/>',
     "jog": '<circle cx="64" cy="64" r="32"/><circle cx="64" cy="64" r="8" fill="{c}" stroke="none"/>'
            '<path d="M64 32 V42"/><path d="M64 86 V96"/><path d="M32 64 H42"/><path d="M86 64 H96"/>',
-    "midiplug": '<circle cx="64" cy="64" r="34"/><circle cx="48" cy="56" r="6" fill="{c}" stroke="none"/>'
                 '<circle cx="64" cy="48" r="6" fill="{c}" stroke="none"/>'
                 '<circle cx="80" cy="56" r="6" fill="{c}" stroke="none"/>'
                 '<circle cx="64" cy="82" r="6" fill="{c}" stroke="none"/>',
@@ -179,7 +177,7 @@ G = {
                  '<path d="M92 40 V76 a12 12 0 0 1 -12 12"/><path d="M104 54 L92 40 L80 54"/>',
 }
 
-# action id -> (group, glyph). Ids match LogicKeyCommands / LogicMidiCommands / dial modes.
+# action id -> (group, glyph). Ids match LogicKeyCommands / dial modes.
 KEY_COMMANDS = {
     "PlayStop": ("transport", "playstop"), "Record": ("record", "record"),
     "GoToBeginning": ("transport", "begin"), "Rewind": ("transport", "rewind_one"),
