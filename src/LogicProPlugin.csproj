@@ -27,6 +27,8 @@
   <ItemGroup>
     <Reference Include="PluginApi">
       <HintPath>$(PluginApiDir)PluginApi.dll</HintPath>
+      <!-- The service provides PluginApi and its dependencies; shipping copies would bloat the package. -->
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
 

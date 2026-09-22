@@ -12,20 +12,92 @@ Not affiliated with or endorsed by Apple or Logitech.
 
 ## Layout
 
-Dialpad Default Profile
+The plugin ships default profiles for the Keypad, the Dialpad and the Actions Ring. They appear the
+first time Logic Pro is added in Options+ after the plugin is installed. Every control can be
+reassigned, and the pages below are only a starting point.
 
-![MX Creative Dialpad layout: Play/Record, Undo/Redo, Zoom on the roller, Scrub on the dial, Modifier and Punch In/Out on the lower buttons](docs/images/dialpad.jpg)
+![MX Creative Keypad and Dialpad running the Logic Pro profile](docs/images/console.jpg)
+
+### Dialpad
+
+![MX Creative Dialpad layout: Play/Record, Undo/Redo, Zoom on the roller, Scrub on the dial, Modifier and Punch In/Out on the lower buttons](docs/images/dialpad.png)
 
 | Control | Normal | With Modifier held |
 |---|---|---|
 | Big dial | Scrub by Division | Scrub by Bar |
 | Roller | Zoom Horizontal | Zoom Vertical |
-| Upper-left dial | Play / Stop | Record |
-| Upper-right dial | Undo | Redo |
+| Upper-left button | Play / Stop | Record |
+| Upper-right button | Undo | Redo |
 | Lower-left button | **Modifier** - hold it | |
 | Lower-right button | Set Punch In | Set Punch Out |
 
 Hold the Modifier with a thumb and every other control on the pad takes its second action.
+
+### Keypad
+
+![MX Creative Keypad layout, five pages](docs/images/keypad.png)
+
+Five pages, stepped through with the arrow keys under the grid.
+
+**Page 1 - Transport**
+
+| | | |
+|---|---|---|
+| Autopunch | Set Punch In | Set Punch Out |
+| Division 1/4 - 1/16 | Input Monitoring | Record Enable |
+| Stop Mode | Play / Stop | Record |
+
+**Page 2 - Track and region**
+
+| | | |
+|---|---|---|
+| Duplicate Track | Create Marker | New Track |
+| Solo Track | Mute Track | Mute Region |
+| Bounce in Place | Join Regions | Split at Playhead |
+
+**Page 3 - Slip, nudge and dial modes**
+
+| | | |
+|---|---|---|
+| Slip Left | Slip Right | Slip Region (dial) |
+| Nudge Left | Nudge Right | Nudge Region (dial) |
+| Audible Scrub (dial) | Scrub by Bar (dial) | Region Gain +/- 0.1 dB (dial) |
+
+The keys marked *dial* are dial modes placed on a key. Pressing one hands that mode to the Dialpad's
+big dial, so the dial can slip or nudge a region, scrub audibly, or trim gain without changing its
+own assignment for good. Press the key again to give the dial back.
+
+**Page 4 - Views and region gain**
+
+| | | |
+|---|---|---|
+| Show Piano Roll | Show Smart Controls | Show Automation |
+| Remove Fades | Region Gain -0.1 dB | Region Gain +0.1 dB |
+| Quantize | Region Gain -1 dB | Region Gain +1 dB |
+
+**Page 5 - Project and toggles**
+
+| | | |
+|---|---|---|
+| Low Latency | Bounce Project | Show/Hide Tuner |
+| Snap: Division | Snap: Smart | Snap to Grid |
+| Metronome | Cycle | Count In |
+
+### Actions Ring
+
+![Actions Ring layout](docs/images/ring.png)
+
+Clockwise from the top: Bounce Project, Low Latency, Show Automation, Show Mixer, Zoom to Fit,
+Show Editors, Show Library, Show Browsers. The ring shows icons only, so the toggle's filled tile is
+what tells you Low Latency is on.
+
+### Using the profiles with an existing setup
+
+Default profiles are applied only when Options+ creates the Logic Pro application entry, so if Logic
+Pro was already set up before the plugin was installed you keep your own layout. To load these
+instead, import them from [`src/package/profiles`](src/package/profiles) - Options+ profile menu, the
+`...` next to the profile name, **Import profile** - one file per device: `DefaultProfile70.lp5` for
+the Keypad, `71` for the Dialpad, `72` for the Actions Ring.
 
 ### Stop Mode
 
@@ -165,16 +237,26 @@ Package for distribution:
 
 ```bash
 cd src && dotnet build -c Release
-logiplugintool pack ./bin/Release/ ./LogicPro_1_0.lplug4
-logiplugintool verify ./LogicPro_1_0.lplug4
+logiplugintool pack ../bin/Release/ ../LogicPro_1_0.lplug4
+logiplugintool verify ../LogicPro_1_0.lplug4
 ```
 
-## Setup
+`logiplugintool` targets .NET 8; on a machine with only .NET 10 run it with `DOTNET_ROLL_FORWARD=Major`.
 
-1. **Logi Plugin Service** needs Accessibility permission (System Settings → Privacy & Security →
+The Release build includes the default profiles from `src/package/profiles`. To refresh them, lay the
+device out in Options+, export the profile from the `...` menu next to its name, and save it over the
+matching `DefaultProfile7x.lp5`.
+
+## Install
+
+1. Download the latest `LogicPro_x_y.lplug4` from the releases page and double-click it. Logi Plugin
+   Service installs it and Options+ lists Logic Pro under Installed Plugins.
+2. **Logi Plugin Service** needs Accessibility permission (System Settings → Privacy & Security →
    Accessibility), or no key command can reach Logic.
-2. In Options+, open the Keypad or Dialpad, choose the **Logic Pro** profile, and drag actions from
-   **All Actions → Installed Plugins → Logic Pro**.
+3. Open Logic Pro. The console switches to the Logic Pro profile with the layouts above. To change
+   anything, open the device in Options+ and drag actions from **All Actions → Installed Plugins →
+   Logic Pro**.
+4. Merge the key command file described below so the actions marked with an asterisk work.
 
 ## FAQ
 
