@@ -22,7 +22,7 @@ namespace Loupedeck.LogicProPlugin
         {
             this.Name = "LogicDivisionToggle";
             this.DisplayName = "Division Toggle *";
-            this.GroupName = "Advanced";
+            this.GroupName = "Transport";
             this.Description = "Switch Logic's Division between two values with one key";
 
             this.ActionEditor.AddControlEx(new ActionEditorListbox(FirstControl, "First division:"));

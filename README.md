@@ -36,6 +36,9 @@ on the console follows - the same key on the dialpad plays and stops as usual, o
 depending on the mode. The setting is remembered across restarts. Return mode uses Logic's *Play or
 Stop and Go to Last Locate Position*, one of the commands the key command file assigns.
 
+**Division Toggle**, also in Transport, works the same way for Logic's Division: choose two values -
+1/4 and 1/16, say - and each press sets the other, with the key face showing which is current.
+
 ## How it works
 
 Every action sends a Logic key command, but only when Logic Pro is the focused application - the plugin checks before

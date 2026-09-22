@@ -219,7 +219,7 @@ DIAL_MODES = {
 
 ADVANCED = {
     "LogicDialConfigurable": "jog", "LogicButtonConfigurable": "button",
-    "LogicCustomShortcutCommand": "shortcut", "LogicDivisionToggleCommand": "divtoggle", "LogicModifierCommand": "modifier",
+    "LogicCustomShortcutCommand": "shortcut", "LogicModifierCommand": "modifier",
 }
 
 
@@ -262,7 +262,8 @@ def main():
         count += 1
 
     write(f"{NAMESPACE}.LogicStopModeCommand", "stopmode", "transport")
-    count += 1
+    write(f"{NAMESPACE}.LogicDivisionToggleCommand", "divtoggle", "transport")
+    count += 2
 
     # Fallbacks for the parameterised actions themselves.
     write(f"{NAMESPACE}.LogicShortcutCommand", "playstop", "transport")
