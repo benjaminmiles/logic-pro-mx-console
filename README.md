@@ -38,8 +38,9 @@ Stop and Go to Last Locate Position*, one of the commands the key command file a
 
 ### Toggle keys
 
-Metronome, Cycle, Count In, Autopunch, Snap to Grid and Low Latency show **On** or **Off** on the key
-face, and flip on each press.
+Metronome, Cycle, Count In, Autopunch, Snap to Grid and Low Latency show their state in the icon - an
+outline tile when off, a filled tile when on - so it reads on the Actions Ring as well as on a key,
+where the label says On or Off too. They flip on each press.
 
 Logic never reports its settings, so the key shows the state the plugin last set. That is correct as
 long as you switch these from the console. If you change one in Logic itself, the key ends up inverted:

@@ -228,7 +228,13 @@ ADVANCED = {
 }
 
 
-def svg(glyph, color, colored=True):
+def svg(glyph, color, colored=True, filled=False):
+    if filled:
+        # "on" state: the tile takes the accent colour and the glyph goes dark
+        body = G[glyph].replace("{c}", "#000000")
+        return ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">'
+                f'<rect width="128" height="128" fill="#000000"/><rect x="6" y="6" width="116" height="116" rx="22" fill="{color}"/>'
+                f'<g fill="none" stroke="#000000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">{body}</g></svg>')
     body = G[glyph].replace("{c}", color)
 
     # Logi Plugin Service recolours *monochrome* SVGs to the icon template's foreground, which would
@@ -270,6 +276,14 @@ def main():
         if class_name in SHORT_NAMES:
             write(SHORT_NAMES[class_name], glyph, "advanced")
             count += 1
+
+    TOGGLES = ["CycleToggle", "Metronome", "Autopunch", "CountIn", "SnapToggle", "LowLatency"]
+    for action_id in TOGGLES:
+        group, glyph = KEY_COMMANDS[action_id]
+        write(f"{NAMESPACE}.LogicToggleCommand___{action_id}", glyph, group)
+        with open(os.path.join(PACKAGE, "actionicons", f"{NAMESPACE}.LogicToggleCommand___{action_id}_On.svg"), "w") as handle:
+            handle.write(svg(glyph, COLORS[group], filled=True))
+        count += 2
 
     write(f"{NAMESPACE}.LogicStopModeCommand", "stopmode", "transport")
     write(f"{NAMESPACE}.LogicDivisionToggleCommand", "divtoggle", "transport")
